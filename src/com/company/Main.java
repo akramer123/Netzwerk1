@@ -11,11 +11,15 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int counter = 1;
         String line;
-        while ((line = reader.readLine()) != null && !line.equals("")) {
-            System.out.println("[" + counter + "] " + line);
-            counter++;
+        FileOutputStream file = new FileOutputStream("test.txt");
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(file))) {
+            while ((line = reader.readLine()) != null && !line.equals("")) {
+                bufferedWriter.write("[" + counter + "] " + line);
+                bufferedWriter.newLine();
+                counter++;
+            }
         }
-        SimpleDateFormat format = new SimpleDateFormat("dd.mm.yyyy hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy hh:mm");
         System.out.println("Zugriff aufgezeichnet am " + format.format(new Date()));
     }
 }
