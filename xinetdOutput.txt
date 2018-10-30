@@ -1,0 +1,7 @@
+1GET / HTTP/1.1
+2User-Agent: Wget/1.17.1 (linux-gnu)
+3Accept: */*
+4Accept-Encoding: identity
+5Host: localhost:5204
+6Connection: Keep-Alive
+Zugriff aufgezeichnet am [10/13/18 8:10 AM]!
