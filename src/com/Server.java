@@ -1,14 +1,14 @@
 package com;
 
+import com.sun.deploy.util.URLUtil;
+import com.sun.jndi.toolkit.url.UrlUtil;
 import com.sun.xml.internal.fastinfoset.EncodingConstants;
 import sun.awt.CharsetString;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
@@ -48,37 +48,53 @@ public class Server {
 
                     getPath(fromClient);
 
+
+                    InputStream inputStream = null;
+                    URLConnection connection;
                     // Server requests the page from the target host.
                     URL url = new URL("https://" + host + "/" + path);
                     HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
-
-                    String contentEncoding = con.getContentEncoding();
+                    connection = con;
+                    try {
+                        inputStream = con.getInputStream();
+                    } catch (ConnectException conEx) {
+                        url = new URL("http://" + host + "/" + path);
+                        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                        httpCon.setRequestProperty("RequestMethod", "GET");
+                        connection = httpCon;
+                        if (httpCon.getResponseCode() == 200) {
+                            inputStream = httpCon.getInputStream();
+                        }
+                    }
+                    String contentEncoding = connection.getContentEncoding();
                     if (contentEncoding == null) {
                         contentEncoding = StandardCharsets.ISO_8859_1.name();
                     }
+                    if (inputStream != null) {
 
-                    BufferedReader inputFromTargetHost = new BufferedReader(
-                            new InputStreamReader(con.getInputStream(), contentEncoding));
+                        BufferedReader inputFromTargetHost = new BufferedReader(
+                                new InputStreamReader(inputStream, contentEncoding));
 
-                    String inputLine;
-                    StringBuilder content = new StringBuilder();
-                    while ((inputLine = inputFromTargetHost.readLine()) != null) {
-                        content.append(inputLine);
+                        String inputLine;
+                        StringBuilder content = new StringBuilder();
+                        while ((inputLine = inputFromTargetHost.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        inputFromTargetHost.close();
+
+                        String positive = changeContent(content.toString());
+
+                        BufferedWriter toClient =
+                                new BufferedWriter(
+                                        new OutputStreamWriter(s.getOutputStream(), contentEncoding));
+                        //Server writes the changed page back to client.
+                        toClient.write(ServerConstants.HTTP10OK);
+                        toClient.write("Content-length: " + positive.length() + "\r\n");
+                        toClient.write("\r\n");
+                        toClient.write(positive);
+                        toClient.flush();
                     }
-                    inputFromTargetHost.close();
-
-                    String positive = changeContent(content.toString());
-
-                    BufferedWriter toClient =
-                            new BufferedWriter(
-                                    new OutputStreamWriter(s.getOutputStream(), contentEncoding));
-                    //Server writes the changed page back to client.
-                    toClient.write(ServerConstants.HTTP10OK);
-                    toClient.write("Content-length: " + positive.length() + "\r\n");
-                    toClient.write("\r\n");
-                    toClient.write(positive);
-                    toClient.flush();
                 }
             }
         } catch (IOException e) {
