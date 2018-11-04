@@ -72,7 +72,7 @@ public class GeoCodingService {
             con.disconnect();
 
             //call getGeoPosition von GeoCodingFacade
-            return 0.0;
+            return geoCodingFacade.getGeoPosition(geoModel);
 
         } catch (ProtocolException | MalformedURLException e) {
             e.printStackTrace();
