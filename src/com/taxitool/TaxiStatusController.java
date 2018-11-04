@@ -10,6 +10,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class TaxiStatusController {
 
+
     @RequestMapping(value = "/status", method = GET)
     public String getStatus(@RequestParam(value = "id") String id) {
         return "test";
