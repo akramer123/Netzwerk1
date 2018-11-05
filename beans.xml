@@ -14,7 +14,11 @@
     <alias name="geoCodingService" alias="geoCodingService"/>
     <bean id="geoCodingService" class="com.taxitool.service.GeoCodingService">
         <property name="geoCodingFacade" ref="geoCodingFacade"/>
+        <property name="endpointService" ref="endpointService"/>
     </bean>
+
+    <alias name="endpointService" alias="com.taxitool.endpoint.DefaultEndpointService"/>
+    <bean name="endpointService" id="endpointService"/>
 
 
 </beans>

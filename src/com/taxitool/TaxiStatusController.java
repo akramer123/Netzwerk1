@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@RequestMapping(value="/taxi")
 @RestController
 public class TaxiStatusController {
 

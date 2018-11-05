@@ -1,6 +1,11 @@
 package com.taxitool.service;
 
 import com.taxitool.TaxiConstants;
+import com.taxitool.model.routing.Route;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Date;
 
 public class RoutingService {
 
@@ -15,6 +20,11 @@ public class RoutingService {
             "&waypoint0=geo!52.5,13.4\n" +
             "&waypoint1=geo!52.5,13.45\n" +
             "&mode=fastest;car;traffic:disabled";
+
+    @RequestMapping(value="/calculateRoute", method = RequestMethod.GET)
+    public Route calculateRoute(){
+        return new Route();
+    }
 
 
 
