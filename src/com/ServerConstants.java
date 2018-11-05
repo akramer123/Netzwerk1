@@ -2,7 +2,7 @@ package com;
 
 public final class ServerConstants {
 
-    public static final String HTTP10OK="HTTP/1.0 200 OK\r\n";
+    public static final String HTTP10OK="HTTP/1.1 200 OK\r\n";
     public static final String IMG_SMILEY = "" +
             "<svg\n" +
             "   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n" +

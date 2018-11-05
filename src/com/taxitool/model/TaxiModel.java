@@ -1,4 +1,4 @@
-package com.taxitool;
+package com.taxitool.model;
 
 import java.util.Date;
 

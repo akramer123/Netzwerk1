@@ -1,6 +1,6 @@
 package com.taxitool.endpoint;
 
-import com.taxitool.ParameterStringBuilder;
+import com.taxitool.utils.ParameterStringBuilder;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.DataOutputStream;

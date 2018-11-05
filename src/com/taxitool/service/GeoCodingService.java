@@ -2,7 +2,6 @@ package com.taxitool.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.taxitool.ParameterStringBuilder;
 import com.taxitool.endpoint.DefaultEndpointService;
 import com.taxitool.facade.GeoCodingFacade;
 import com.taxitool.model.geocoding.GeoModel;
@@ -10,17 +9,10 @@ import com.taxitool.model.geocoding.GeoModel;
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.taxitool.ParameterStringBuilder.getParamsString;
 
 public class GeoCodingService {
 
