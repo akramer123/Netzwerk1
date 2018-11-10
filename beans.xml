@@ -11,11 +11,22 @@
         <!-- collaborators and configuration for this bean go here -->
     </bean>
 
+    <alias name="lightFacade" alias="lightFacade"/>
+    <bean id="lightFacade" class="com.taxitool.facade.LightFacade">
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+
     <alias name="geoCodingService" alias="geoCodingService"/>
     <bean id="geoCodingService" class="com.taxitool.service.GeoCodingService">
         <property name="geoCodingFacade" ref="geoCodingFacade"/>
         <property name="endpointService" ref="endpointService"/>
     </bean>
+
+    <alias name="lightService" alias="lightService"/>
+    <bean id="lightService" class="com.taxitool.service.LightService">
+        <property name="lightFacade" ref="lightFacade"/>
+    </bean>
+
 
     <alias name="endpointService" alias="com.taxitool.endpoint.DefaultEndpointService"/>
     <bean name="endpointService" id="endpointService"/>

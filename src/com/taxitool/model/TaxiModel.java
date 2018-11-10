@@ -7,4 +7,7 @@ public class TaxiModel {
     private TaxiStatus status;
     private Date estimatedTime;
 
+    public TaxiStatus getStatus() {
+        return status;
+    }
 }
