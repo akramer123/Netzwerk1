@@ -10,18 +10,16 @@ import java.util.Map;
 
 public class DefaultEndpointService {
 
-    public HttpsURLConnection callRESTMethodHERE(Map<String, String> parameters) {
+    public HttpsURLConnection callRESTMethodHERE(String restApiString, Map<String, String> parameters) {
         parameters.put("app_id", "F7iYpiXSc8wnCRDYfMUQ");
         parameters.put("app_code", "jpDlJdgGk5ms7QQH");
-        return callRESTMethod(parameters,"application/json");
+        return callRESTMethod(restApiString, parameters, "application/json");
     }
 
-    public HttpsURLConnection callRESTMethod(Map<String, String> parameters, String contentType) {
+    public HttpsURLConnection callRESTMethod(String restApiString, Map<String, String> parameters, String contentType) {
         HttpsURLConnection con = null;
         try {
-            //TODO: project.properties
-            //url = new URL(BASEURL_GEOCODE + "/" + GEOCODE_VERSION + "/" + GEOCODE_RETURNFILE +paramString);
-            URL url = null;
+            URL url = new URL(restApiString);
             con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setDoOutput(true);

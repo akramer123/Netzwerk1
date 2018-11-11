@@ -23,6 +23,7 @@ public class RoutingService {
 
     @RequestMapping(value="/calculateRoute", method = RequestMethod.GET)
     public Route calculateRoute(){
+        String apiURLString = TaxiConstants.BASEURL + TaxiConstants.PATH + TaxiConstants.CALCULATEROUTE;
         return new Route();
     }
 

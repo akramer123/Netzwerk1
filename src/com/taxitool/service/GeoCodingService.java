@@ -2,9 +2,11 @@ package com.taxitool.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.taxitool.TaxiConstants;
 import com.taxitool.endpoint.DefaultEndpointService;
 import com.taxitool.facade.GeoCodingFacade;
 import com.taxitool.model.geocoding.GeoModel;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
@@ -21,22 +23,15 @@ public class GeoCodingService {
     @Resource
     private DefaultEndpointService endpointService;
 
-    private String EXAMPLE_CALL = "/6.2/geocode.json\n" +
-            "  ?app_id=F7iYpiXSc8wnCRDYfMUQ\n" +
-            "  &app_code=jpDlJdgGk5ms7QQH-NvpUQ\n" +
-            "  &searchtext=425+W+Randolph+Chicago";
-
-    //TODO: auslagern in project.properties
-    private final String BASEURL_GEOCODE = "https://geocoder.api.here.com";
-    private final String GEOCODE_VERSION = "6.2";
-    private final String GEOCODE_RETURNFILE = "geocode.json";
-
     public Double getGeoCode(String searchText) {
 
+        //TODO: add Threads
+
+        String apiUrlString = TaxiConstants.BASEURL_GEOCODE + "/" + TaxiConstants.GEOCODE_VERSION + "/" + TaxiConstants.GEOCODE_RETURNFILE;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("searchtext", searchText);
 
-        HttpsURLConnection con = endpointService.callRESTMethodHERE(parameters);
+        HttpsURLConnection con = endpointService.callRESTMethodHERE(apiUrlString, parameters);
 
         BufferedReader in;
         try {

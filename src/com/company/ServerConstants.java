@@ -1,4 +1,4 @@
-package com;
+package com.company;
 
 public final class ServerConstants {
 
