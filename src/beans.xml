@@ -10,17 +10,25 @@
     <!--Facades -->
     <alias name="geoCodingFacade" alias="geoCodingFacade"/>
     <bean id="geoCodingFacade" class="com.taxitool.facade.GeoCodingFacade">
-        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+    <alias name="lightFacade" alias="lightFacade"/>
+    <bean id="lightFacade" class="com.taxitool.facade.LightFacade">
     </bean>
 
+
+    <!-- Services -->
     <alias alias="endpointService" name="endpointService"/>
     <bean id="endpointService" class="com.taxitool.endpoint.DefaultEndpointService"/>
 
-    <!-- Services -->
     <alias name="geoCodingService" alias="geoCodingService"/>
     <bean id="geoCodingService" class="com.taxitool.service.GeoCodingService">
         <property name="geoCodingFacade" ref="geoCodingFacade"/>
         <property name="endpointService" ref="endpointService"/>
+    </bean>
+    
+    <alias name="lightService" alias="lightService"/>
+    <bean id="lightService" class="com.taxitool.service.LightService">
+        <property name="lightFacade" ref="lightFacade"/>
     </bean>
 
 </beans>
