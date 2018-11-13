@@ -25,7 +25,7 @@
         <property name="geoCodingFacade" ref="geoCodingFacade"/>
         <property name="endpointService" ref="endpointService"/>
     </bean>
-    
+
     <alias name="lightService" alias="lightService"/>
     <bean id="lightService" class="com.taxitool.service.LightService">
         <property name="lightFacade" ref="lightFacade"/>
