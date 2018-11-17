@@ -2,6 +2,7 @@
 package com.taxitool.model.routing;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "instruction",
     "travelTime",
     "length",
+    "shape",
+    "note",
     "id",
     "_type"
 })
@@ -29,6 +32,10 @@ public class Maneuver {
     private Integer travelTime;
     @JsonProperty("length")
     private Integer length;
+    @JsonProperty("shape")
+    private List<String> shape = null;
+    @JsonProperty("note")
+    private List<Note> note = null;
     @JsonProperty("id")
     private String id;
     @JsonProperty("_type")
@@ -74,6 +81,26 @@ public class Maneuver {
     @JsonProperty("length")
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    @JsonProperty("shape")
+    public List<String> getShape() {
+        return shape;
+    }
+
+    @JsonProperty("shape")
+    public void setShape(List<String> shape) {
+        this.shape = shape;
+    }
+
+    @JsonProperty("note")
+    public List<Note> getNote() {
+        return note;
+    }
+
+    @JsonProperty("note")
+    public void setNote(List<Note> note) {
+        this.note = note;
     }
 
     @JsonProperty("id")

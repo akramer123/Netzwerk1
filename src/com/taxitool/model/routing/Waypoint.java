@@ -33,7 +33,7 @@ public class Waypoint {
     @JsonProperty("type")
     private String type;
     @JsonProperty("spot")
-    private Double spot;
+    private Integer spot;
     @JsonProperty("sideOfStreet")
     private String sideOfStreet;
     @JsonProperty("mappedRoadName")
@@ -86,12 +86,12 @@ public class Waypoint {
     }
 
     @JsonProperty("spot")
-    public Double getSpot() {
+    public Integer getSpot() {
         return spot;
     }
 
     @JsonProperty("spot")
-    public void setSpot(Double spot) {
+    public void setSpot(Integer spot) {
         this.spot = spot;
     }
 

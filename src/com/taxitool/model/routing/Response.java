@@ -22,7 +22,7 @@ public class Response {
     @JsonProperty("metaInfo")
     private MetaInfo metaInfo;
     @JsonProperty("route")
-    private List<Route> route = null;
+    private List<Route_> route = null;
     @JsonProperty("language")
     private String language;
     @JsonIgnore
@@ -39,12 +39,12 @@ public class Response {
     }
 
     @JsonProperty("route")
-    public List<Route> getRoute() {
+    public List<Route_> getRoute() {
         return route;
     }
 
     @JsonProperty("route")
-    public void setRoute(List<Route> route) {
+    public void setRoute(List<Route_> route) {
         this.route = route;
     }
 

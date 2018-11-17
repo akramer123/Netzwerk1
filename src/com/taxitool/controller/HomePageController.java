@@ -2,6 +2,7 @@ package com.taxitool.controller;
 
 import com.taxitool.model.TaxiModel;
 import com.taxitool.model.geocoding.NavigationPosition;
+import com.taxitool.model.routing.Route;
 import com.taxitool.service.GeoCodingService;
 import com.taxitool.service.RoutingService;
 import org.hibernate.validator.constraints.pl.REGON;
@@ -24,8 +25,8 @@ public class HomePageController {
 
     @Resource
     private GeoCodingService geoCodingService;
-    //@Resource
-    //private RoutingService routingService;
+    @Resource
+    private RoutingService routingService;
 
     @GetMapping("/taxi/{id}")
     public String getTaxi(@PathVariable("id")String id, @ModelAttribute("taxi") TaxiModel taxi, Model model) {
@@ -50,6 +51,22 @@ public class HomePageController {
         redirectAttributes.addFlashAttribute("taxi", taxiModel);
         return new RedirectView("/taxi/"+taxiModel.getId());
     }
+
+    @PostMapping("/calcRoute")
+    public RedirectView calcRoute(@ModelAttribute("taxi") TaxiModel taxiModel, RedirectAttributes redirectAttributes) {
+
+        NavigationPosition geoCode = geoCodingService.getGeoCode(taxiModel.getEndPoint());
+        if(geoCode==null){
+            taxiModel.setAddress("Address not found");
+        } else {
+            Route route = routingService.calculateRoute(taxiModel, geoCode.getLatitude(), geoCode.getLongitude());
+            taxiModel.setRoute(route);
+        }
+
+        redirectAttributes.addFlashAttribute("taxi", taxiModel);
+        return new RedirectView("/taxi/"+taxiModel.getId());
+    }
+
 
     @ModelAttribute("taxi")
     public TaxiModel taxi() {

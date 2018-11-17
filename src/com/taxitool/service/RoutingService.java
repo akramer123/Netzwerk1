@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class RoutingService {
 
-    private final String APIURL = TaxiConstants.BASEURL+TaxiConstants.PATH+TaxiConstants.CALCULATEROUTE;
+    private final String APIURL = TaxiConstants.BASEURL+"/"+TaxiConstants.PATH+"/"+TaxiConstants.CALCULATEROUTE;
 
 
     @Resource
@@ -37,7 +37,8 @@ public class RoutingService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("waypoint0","geo!"+ taxiModel.getLatitude()+","+taxiModel.getLongtitude());
         parameters.put("waypoint1","geo!"+latitude+","+longtitude);
-        parameters.put("mode", "mode=fastest;car;traffic:disabled");
+        parameters.put("mode", "fastest;car;traffic:disabled");
+        parameters.put("representation","display");
 
         String content = endpointService.callRESTMethodHERE(APIURL, parameters);
 
@@ -45,7 +46,6 @@ public class RoutingService {
         Route route = null;
         try {
             route = mapper.readValue(content, Route.class);
-            //TODO: routingfacade
         } catch (IOException e) {
             e.printStackTrace();
         }

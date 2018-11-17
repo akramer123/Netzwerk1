@@ -1,5 +1,7 @@
 package com.taxitool.model;
 
+import com.taxitool.model.routing.Route;
+
 import java.util.Date;
 
 public class TaxiModel {
@@ -10,6 +12,8 @@ public class TaxiModel {
     private String address;
     private double latitude;
     private double longtitude;
+    private Route route;
+    private String endPoint;
 
     public String getAddress() {
         return address;
@@ -57,5 +61,21 @@ public class TaxiModel {
 
     public void setLongtitude(double longtitude) {
         this.longtitude = longtitude;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
     }
 }
