@@ -352,5 +352,7 @@
     </tbody>
 </table>
 
+<p>${taxi.route.response.route[0].summary.}</p>
+
 </body>
 </html>

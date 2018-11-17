@@ -17,18 +17,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "label",
     "shapeIndex"
 })
-public class Waypoint {
+public class Start {
 
     @JsonProperty("linkId")
     private String linkId;
     @JsonProperty("mappedPosition")
-    private MappedPosition mappedPosition;
+    private MappedPosition_ mappedPosition;
     @JsonProperty("originalPosition")
-    private OriginalPosition originalPosition;
+    private OriginalPosition_ originalPosition;
     @JsonProperty("type")
     private String type;
     @JsonProperty("spot")
-    private Integer spot;
+    private Double spot;
     @JsonProperty("sideOfStreet")
     private String sideOfStreet;
     @JsonProperty("mappedRoadName")
@@ -49,22 +49,22 @@ public class Waypoint {
     }
 
     @JsonProperty("mappedPosition")
-    public MappedPosition getMappedPosition() {
+    public MappedPosition_ getMappedPosition() {
         return mappedPosition;
     }
 
     @JsonProperty("mappedPosition")
-    public void setMappedPosition(MappedPosition mappedPosition) {
+    public void setMappedPosition(MappedPosition_ mappedPosition) {
         this.mappedPosition = mappedPosition;
     }
 
     @JsonProperty("originalPosition")
-    public OriginalPosition getOriginalPosition() {
+    public OriginalPosition_ getOriginalPosition() {
         return originalPosition;
     }
 
     @JsonProperty("originalPosition")
-    public void setOriginalPosition(OriginalPosition originalPosition) {
+    public void setOriginalPosition(OriginalPosition_ originalPosition) {
         this.originalPosition = originalPosition;
     }
 
@@ -79,12 +79,12 @@ public class Waypoint {
     }
 
     @JsonProperty("spot")
-    public Integer getSpot() {
+    public Double getSpot() {
         return spot;
     }
 
     @JsonProperty("spot")
-    public void setSpot(Integer spot) {
+    public void setSpot(Double spot) {
         this.spot = spot;
     }
 

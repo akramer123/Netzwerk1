@@ -38,7 +38,7 @@ public class RoutingService {
         parameters.put("waypoint0","geo!"+ taxiModel.getLatitude()+","+taxiModel.getLongtitude());
         parameters.put("waypoint1","geo!"+latitude+","+longtitude);
         parameters.put("mode", "fastest;car;traffic:disabled");
-        parameters.put("representation","display");
+        parameters.put("representation","navigation");
 
         String content = endpointService.callRESTMethodHERE(APIURL, parameters);
 

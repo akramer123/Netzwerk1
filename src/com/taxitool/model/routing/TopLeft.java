@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "latitude",
     "longitude"
 })
-public class OriginalPosition {
+public class TopLeft {
 
     @JsonProperty("latitude")
     private Double latitude;

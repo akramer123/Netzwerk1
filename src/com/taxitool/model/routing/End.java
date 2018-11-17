@@ -17,14 +17,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "label",
     "shapeIndex"
 })
-public class Waypoint {
+public class End {
 
     @JsonProperty("linkId")
     private String linkId;
     @JsonProperty("mappedPosition")
-    private MappedPosition mappedPosition;
+    private MappedPosition__ mappedPosition;
     @JsonProperty("originalPosition")
-    private OriginalPosition originalPosition;
+    private OriginalPosition__ originalPosition;
     @JsonProperty("type")
     private String type;
     @JsonProperty("spot")
@@ -49,22 +49,22 @@ public class Waypoint {
     }
 
     @JsonProperty("mappedPosition")
-    public MappedPosition getMappedPosition() {
+    public MappedPosition__ getMappedPosition() {
         return mappedPosition;
     }
 
     @JsonProperty("mappedPosition")
-    public void setMappedPosition(MappedPosition mappedPosition) {
+    public void setMappedPosition(MappedPosition__ mappedPosition) {
         this.mappedPosition = mappedPosition;
     }
 
     @JsonProperty("originalPosition")
-    public OriginalPosition getOriginalPosition() {
+    public OriginalPosition__ getOriginalPosition() {
         return originalPosition;
     }
 
     @JsonProperty("originalPosition")
-    public void setOriginalPosition(OriginalPosition originalPosition) {
+    public void setOriginalPosition(OriginalPosition__ originalPosition) {
         this.originalPosition = originalPosition;
     }
 

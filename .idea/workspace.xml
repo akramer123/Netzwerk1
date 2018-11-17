@@ -2,46 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fed21394-8cca-41e2-b3a9-648cc2258b50" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/static/js/map.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/webapp/WEB-INF/views/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/webapp/WEB-INF/views/js/map.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BottomRight.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BottomRight_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BottomRight__.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BoundingBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BoundingBox_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/BoundingBox__.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/DynamicSpeedInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/End.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Incident.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Link.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/ManeuverGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition__.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition__.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/ShapeIndex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Start.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Summary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/TopLeft.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/TopLeft_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/TopLeft__.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/ValidityPeriod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Zone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/controller/HomePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/controller/HomePageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/End.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Leg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Leg.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Maneuver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Maneuver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition_.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/MappedPosition__.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/MetaInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/MetaInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Mode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Mode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Note.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition_.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/OriginalPosition__.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Note.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Position.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Routing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Start.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Summary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/TaxiConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taxitool/TaxiConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/controller/HomePageController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taxitool/controller/HomePageController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/TaxiModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taxitool/model/TaxiModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/End.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/MappedPosition_.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/MappedPosition__.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/OriginalPosition_.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/OriginalPosition__.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/Routing.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/Start.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/model/routing/Summary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taxitool/service/RoutingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taxitool/service/RoutingService.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,7 +70,7 @@
         <counts>
           <entry key="css" value="2" />
           <entry key="gitignore" value="2" />
-          <entry key="java" value="39" />
+          <entry key="java" value="42" />
           <entry key="js" value="2" />
           <entry key="jsp" value="5" />
           <entry key="properties" value="4" />
@@ -82,7 +80,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="2" />
-          <entry key="JAVA" value="39" />
+          <entry key="JAVA" value="42" />
           <entry key="JSP" value="5" />
           <entry key="JavaScript" value="2" />
           <entry key="PLAIN_TEXT" value="2" />
@@ -94,7 +92,7 @@
         <counts>
           <entry key="java" value="1615" />
           <entry key="js" value="14" />
-          <entry key="jsp" value="660" />
+          <entry key="jsp" value="705" />
           <entry key="properties" value="139" />
           <entry key="xml" value="57" />
         </counts>
@@ -102,7 +100,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="1615" />
-          <entry key="JSP" value="660" />
+          <entry key="JSP" value="705" />
           <entry key="JavaScript" value="14" />
           <entry key="Properties" value="139" />
           <entry key="XML" value="57" />
@@ -112,19 +110,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/controller/HomePageController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="61" selection-start-line="61" selection-end-line="61" />
-              <folding>
-                <element signature="e#1971#1972#0" expanded="true" />
-                <element signature="e#2009#2010#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/geocoding/NavigationPosition.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -139,47 +124,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="175">
               <caret line="40" column="51" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
               <folding>
                 <element signature="e#2005#2006#0" expanded="true" />
                 <element signature="e#2059#2060#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Response.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="24" column="20" lean-forward="true" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="23" column="43" lean-forward="true" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -193,20 +146,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="313" column="62" selection-start-line="313" selection-start-column="62" selection-end-line="313" selection-end-column="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/resources/application.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="23" />
+            <state relative-caret-position="274">
+              <caret line="354" column="42" selection-start-line="354" selection-start-column="42" selection-end-line="354" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -271,9 +215,10 @@
         <option value="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" />
         <option value="$PROJECT_DIR$/src/webapp/WEB-INF/views/css/styles.css" />
         <option value="$PROJECT_DIR$/src/webapp/WEB-INF/views/js/map.js" />
-        <option value="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java" />
         <option value="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/model/routing/Zone.java" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" />
       </list>
     </option>
   </component>
@@ -367,15 +312,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="taxitool" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="routing" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Netzwerk1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Netzwerk1" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="taxitool" type="462c0819:PsiDirectoryNode" />
               <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -416,7 +352,7 @@
     <property name="SearchEverywhereHistoryKey" value="TestLights&#9;PSI&#9;JAVA://com.taxitool.TestMain.TestLights" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542487513992" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542488230997" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/SE2" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -580,13 +516,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47393000" />
+    <option name="totallyTimeSpent" value="48101000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="801" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49530515" visible="true" weight="0.2532189" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49530515" visible="true" weight="0.2532189" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -598,7 +534,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32863188" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39915374" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39915374" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -672,16 +608,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java</url>
-          <line>21</line>
-          <properties />
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java</url>
-          <line>44</line>
+          <line>51</line>
           <properties />
-          <option name="timeStamp" value="21" />
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -739,21 +669,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/light/State.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/light/Lights.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-249">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/taxis.html" />
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/lights.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -1033,6 +948,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="354" column="42" selection-start-line="354" selection-start-column="42" selection-end-line="354" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Leg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/MetaInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1040,45 +1000,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Waypoint.java">
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Zone.java">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Response.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="24" column="20" lean-forward="true" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
+        <state relative-caret-position="175">
           <caret line="40" column="51" selection-start-line="40" selection-start-column="51" selection-end-line="40" selection-end-column="51" />
           <folding>
             <element signature="e#2005#2006#0" expanded="true" />
             <element signature="e#2059#2060#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/routing/Route_.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="23" column="43" lean-forward="true" selection-start-line="23" selection-start-column="43" selection-end-line="23" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="313" column="62" selection-start-line="313" selection-start-column="62" selection-end-line="313" selection-end-column="62" />
         </state>
       </provider>
     </entry>
