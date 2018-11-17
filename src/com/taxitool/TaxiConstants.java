@@ -1,20 +1,13 @@
 package com.taxitool;
 
-import org.springframework.beans.factory.annotation.Value;
 
 public final class TaxiConstants {
 
-    @Value("${routeAPI.url}")
-    public static String BASEURL;
-    @Value("${routeAPI.version}")
-    public static String PATH;
-    @Value("${routeAPI.calculate}")
-    public static String CALCULATEROUTE;
+    public static String BASEURL="https:://route.api.here.com";
+    public static String PATH="/routing/7.2";
+    public static String CALCULATEROUTE="calculateroute";
 
-    @Value("${geoAPI.url}")
-    public static String BASEURL_GEOCODE;
-    @Value("${routeAPI.version}")
-    public static String GEOCODE_VERSION;
-    @Value("${routeAPI.geocode}")
-    public static String GEOCODE_RETURNFILE;
+    public static String BASEURL_GEOCODE="https://geocoder.api.here.com";
+    public static String GEOCODE_VERSION="6.2";
+    public static String GEOCODE_RETURNFILE="geocode.json";
 }

@@ -26,6 +26,12 @@
         <property name="endpointService" ref="endpointService"/>
     </bean>
 
+    <alias name="routingService" alias="routingService"/>
+    <bean id="routingService" class="com.taxitool.service.RoutingService">
+        <!--<property name="routingFacade" ref="routingFacade"/>-->
+        <property name="endpointService" ref="endpointService"/>
+    </bean>
+
     <alias name="lightService" alias="lightService"/>
     <bean id="lightService" class="com.taxitool.service.LightService">
         <property name="lightFacade" ref="lightFacade"/>

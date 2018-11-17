@@ -6,6 +6,7 @@ import com.taxitool.TaxiConstants;
 import com.taxitool.endpoint.DefaultEndpointService;
 import com.taxitool.facade.GeoCodingFacade;
 import com.taxitool.model.geocoding.GeoModel;
+import com.taxitool.model.geocoding.NavigationPosition;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ public class GeoCodingService {
     @Resource
     private DefaultEndpointService endpointService;
 
-    public Double getGeoCode(String searchText) {
+    public NavigationPosition getGeoCode(String searchText) {
 
         //TODO: add Threads
 
@@ -31,29 +32,18 @@ public class GeoCodingService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("searchtext", searchText);
 
-        HttpsURLConnection con = endpointService.callRESTMethodHERE(apiUrlString, parameters);
+        String content = endpointService.callRESTMethodHERE(apiUrlString, parameters);
 
-        BufferedReader in;
+
+        ObjectMapper mapper = new ObjectMapper();
+        GeoModel geoModel = null;
         try {
-            in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            ObjectMapper mapper = new ObjectMapper();
-            GeoModel geoModel = mapper.readValue(content.toString(), GeoModel.class);
-
-            in.close();
-            con.disconnect();
-
-            return geoCodingFacade.getGeoPosition(geoModel);
+            geoModel = mapper.readValue(content, GeoModel.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0.0;
+
+        return geoCodingFacade.getGeoPosition(geoModel);
     }
 
 

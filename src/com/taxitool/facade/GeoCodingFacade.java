@@ -9,17 +9,19 @@ import java.util.stream.Collectors;
 
 public class GeoCodingFacade {
 
-    public Double getGeoPosition(GeoModel geoModel) {
-        Double position = -1.0;
+    public NavigationPosition getGeoPosition(GeoModel geoModel) {
+        List<NavigationPosition> navigationPositions = new ArrayList();
         Optional<View> viewModel = geoModel.getResponse().getView().stream().filter(v -> !v.getResult().isEmpty()).findFirst();
         if (viewModel.isPresent()) {
             List<Location> locations = viewModel.get().getResult().stream().map(Result::getLocation).collect(Collectors.toList());
-            List navigationPositions = new ArrayList();
-            locations.stream().findFirst().map(Location::getNavigationPosition).ifPresent(navigationPositions::add);
-            if(!navigationPositions.isEmpty()){
-                position=((NavigationPosition)navigationPositions.get(0)).getLatitude();
+
+            for(Location loc : locations){
+                navigationPositions.addAll(loc.getNavigationPosition());
             }
         }
-        return position;
+        if(!navigationPositions.isEmpty()) {
+            return navigationPositions.get(0);
+        }
+        return null;
     }
 }

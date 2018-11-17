@@ -1,18 +1,28 @@
 package com.taxitool.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taxitool.TaxiConstants;
+import com.taxitool.endpoint.DefaultEndpointService;
+import com.taxitool.model.TaxiModel;
+import com.taxitool.model.geocoding.GeoModel;
 import com.taxitool.model.routing.Route;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RoutingService {
 
     private final String APIURL = TaxiConstants.BASEURL+TaxiConstants.PATH+TaxiConstants.CALCULATEROUTE;
 
-    private String APPID = "F7iYpiXSc8wnCRDYfMUQ";
-    private String APPCODE = "jpDlJdgGk5ms7QQH-NvpUQ";
+
+    @Resource
+    private DefaultEndpointService endpointService;
+
 
     private String EXAMPLE_CALL = "https://route.api.here.com/routing/7.2/calculateroute.json\n" +
             "?app_id=F7iYpiXSc8wnCRDYfMUQ\n" +
@@ -22,11 +32,29 @@ public class RoutingService {
             "&mode=fastest;car;traffic:disabled";
 
     @RequestMapping(value="/calculateRoute", method = RequestMethod.GET)
-    public Route calculateRoute(){
-        String apiURLString = TaxiConstants.BASEURL + TaxiConstants.PATH + TaxiConstants.CALCULATEROUTE;
-        return new Route();
+    public Route calculateRoute(TaxiModel taxiModel, double latitude, double longtitude){
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("waypoint0","geo!"+ taxiModel.getLatitude()+","+taxiModel.getLongtitude());
+        parameters.put("waypoint1","geo!"+latitude+","+longtitude);
+        parameters.put("mode", "mode=fastest;car;traffic:disabled");
+
+        String content = endpointService.callRESTMethodHERE(APIURL, parameters);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Route route = null;
+        try {
+            route = mapper.readValue(content, Route.class);
+            //TODO: routingfacade
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return route;
     }
 
 
+    public void setEndpointService(DefaultEndpointService endpointService) {
+        this.endpointService = endpointService;
+    }
 
 }
