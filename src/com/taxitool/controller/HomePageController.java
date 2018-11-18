@@ -49,6 +49,7 @@ public class HomePageController {
         NavigationPosition geoCode = geoCodingService.getGeoCode(taxiModel.getAddress());
         if (geoCode == null) {
             taxiModel.setAddress("Address not found");
+            taxiModel.setEstimatedTime(null);
         } else {
             taxiModel.setLatitude(geoCode.getLatitude());
             taxiModel.setLongtitude(geoCode.getLongitude());

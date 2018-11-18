@@ -1,6 +1,7 @@
 package com.taxitool.model;
 
 import com.taxitool.model.routing.Route;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ public class TaxiModel {
 
     private int id;
     private TaxiStatus status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date estimatedTime;
     private String address;
     private double latitude;
@@ -15,8 +17,8 @@ public class TaxiModel {
     private Route route;
     private String endPoint;
 
-    public TaxiModel(){
-        this.status=TaxiStatus.FREE;
+    public TaxiModel() {
+        this.status = TaxiStatus.FREE;
     }
 
     public String getAddress() {

@@ -321,6 +321,7 @@
 
 <form action="#" th:action="@{/route}" th:object="${taxi}" method="post">
     <p>Address: <input type="text" th:field="*{address}"/></p>
+    <input type="datetime-local" placeholder="" th:value="*{estimatedTime}" th:field="*{estimatedTime}"/>
     <p><input type="submit" value="Suchen"/>
     </p>
 </form>
@@ -352,12 +353,12 @@
     </tbody>
 </table>
 -->
-
+<span th:if="${routeInfo != null && routeInfo.summary != null}">
 <p th:utext="${routeInfo.summary.text}"></p>
 <a href="/sync"> Sync</a></button>
 
 
-<table>
+    <table>
     <thead>
     <tr>
         <th>Zusammenfassung</th>
@@ -366,12 +367,14 @@
     </tr>
     </thead>
     <tbody>
-        <tr th:each="point : ${routeInfo.maneuver}">
+    <tr th:each="point : ${routeInfo.maneuver}">
         <td th:utext="${point.instruction}"></td>
         <td th:text="${point.position.latitude}"></td>
         <td th:text="${point.position.longitude}"></td>
-        </tr>
+    </tr>
     </tbody>
 </table>
+</span>
+<img src="/images/TAXI.jpg"/>
 </body>
 </html>
