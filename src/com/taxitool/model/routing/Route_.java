@@ -41,6 +41,8 @@ public class Route_ {
     private List<String> label = null;
     @JsonProperty("zone")
     private List<Zone> zone = null;
+    @JsonProperty("routeId")
+    private String routeId = null;
 
     @JsonProperty("waypoint")
     public List<Waypoint> getWaypoint() {
@@ -142,4 +144,13 @@ public class Route_ {
         this.zone = zone;
     }
 
+    @JsonProperty("routeId")
+    public String getRouteId() {
+        return routeId;
+    }
+
+    @JsonProperty("routeId")
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
+    }
 }

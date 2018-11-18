@@ -321,16 +321,16 @@
 
 <form action="#" th:action="@{/route}" th:object="${taxi}" method="post">
     <p>Address: <input type="text" th:field="*{address}"/></p>
-    <p><input type="submit" value="Submit"/>
+    <p><input type="submit" value="Suchen"/>
     </p>
 </form>
 
 <form action="#" th:action="@{/calcRoute}" th:object="${taxi}" method="post">
     <p>Address: <input type="text" th:field="*{endPoint}"/></p>
-    <p><input type="submit" value="Submit"/>
+    <p><input type="submit" value="Route berechnen"/>
     </p>
 </form>
-
+<!--
 <table>
     <thead>
     <tr>
@@ -351,8 +351,27 @@
     </tr>
     </tbody>
 </table>
+-->
 
-<p>${taxi.route.response.route[0].summary.}</p>
+<p th:utext="${routeInfo.summary.text}"></p>
+<a href="/sync"> Sync</a></button>
 
+
+<table>
+    <thead>
+    <tr>
+        <th>Zusammenfassung</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="point : ${routeInfo.maneuver}">
+        <td th:utext="${point.instruction}"></td>
+        <td th:text="${point.position.latitude}"></td>
+        <td th:text="${point.position.longitude}"></td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

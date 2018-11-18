@@ -1,8 +1,11 @@
 package com.taxitool.controller;
 
 import com.taxitool.model.TaxiModel;
+import com.taxitool.model.TaxiStatus;
 import com.taxitool.model.geocoding.NavigationPosition;
+import com.taxitool.model.routing.Leg;
 import com.taxitool.model.routing.Route;
+import com.taxitool.model.routing.Route_;
 import com.taxitool.service.GeoCodingService;
 import com.taxitool.service.RoutingService;
 import org.hibernate.validator.constraints.pl.REGON;
@@ -29,9 +32,13 @@ public class HomePageController {
     private RoutingService routingService;
 
     @GetMapping("/taxi/{id}")
-    public String getTaxi(@PathVariable("id")String id, @ModelAttribute("taxi") TaxiModel taxi, Model model) {
+    public String getTaxi(@PathVariable("id") String id, @ModelAttribute("taxi") TaxiModel taxi, Model model) {
         taxi.setId(Integer.parseInt(id));
         model.addAttribute("taxi", taxi);
+        if(taxi.getRoute()!=null){
+            Leg routeInfo = taxi.getRoute().getResponse().getRoute().get(0).getLeg().get(0);
+            model.addAttribute("routeInfo",routeInfo);
+        }
         return "taxis";
     }
 
@@ -40,7 +47,7 @@ public class HomePageController {
     public RedirectView route(@ModelAttribute("taxi") TaxiModel taxiModel, RedirectAttributes redirectAttributes) {
 
         NavigationPosition geoCode = geoCodingService.getGeoCode(taxiModel.getAddress());
-        if(geoCode==null){
+        if (geoCode == null) {
             taxiModel.setAddress("Address not found");
         } else {
             taxiModel.setLatitude(geoCode.getLatitude());
@@ -49,22 +56,33 @@ public class HomePageController {
 
         //routingService.calculateRoute();
         redirectAttributes.addFlashAttribute("taxi", taxiModel);
-        return new RedirectView("/taxi/"+taxiModel.getId());
+        return new RedirectView("/taxi/" + taxiModel.getId());
     }
 
     @PostMapping("/calcRoute")
     public RedirectView calcRoute(@ModelAttribute("taxi") TaxiModel taxiModel, RedirectAttributes redirectAttributes) {
 
         NavigationPosition geoCode = geoCodingService.getGeoCode(taxiModel.getEndPoint());
-        if(geoCode==null){
+        if (geoCode == null) {
             taxiModel.setAddress("Address not found");
         } else {
             Route route = routingService.calculateRoute(taxiModel, geoCode.getLatitude(), geoCode.getLongitude());
             taxiModel.setRoute(route);
+            taxiModel.setStatus(TaxiStatus.ONTIME);
         }
 
         redirectAttributes.addFlashAttribute("taxi", taxiModel);
-        return new RedirectView("/taxi/"+taxiModel.getId());
+        return new RedirectView("/taxi/" + taxiModel.getId());
+    }
+
+    @GetMapping("/sync")
+    public RedirectView syncRoute(@ModelAttribute("taxi") TaxiModel taxiModel, RedirectAttributes redirectAttributes) {
+
+        Route route = routingService.syncRoute(taxiModel);
+        taxiModel.setStatus(TaxiStatus.ONTIME);
+
+        redirectAttributes.addFlashAttribute("taxi", taxiModel);
+        return new RedirectView("/taxi/" + taxiModel.getId());
     }
 
 

@@ -15,6 +15,10 @@ public class TaxiModel {
     private Route route;
     private String endPoint;
 
+    public TaxiModel(){
+        this.status=TaxiStatus.FREE;
+    }
+
     public String getAddress() {
         return address;
     }
