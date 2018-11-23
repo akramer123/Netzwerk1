@@ -1,10 +1,14 @@
 package com.taxitool.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.taxitool.endpoint.DefaultEndpointService;
 import com.taxitool.facade.LightFacade;
+import com.taxitool.model.TaxiModel;
+import com.taxitool.model.TaxiStatus;
 import com.taxitool.model.light.State;
+import com.taxitool.utils.SessionUtils;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,25 +16,57 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static java.lang.Thread.interrupted;
 
 public class LightService {
     @Resource
     private LightFacade lightFacade;
+
     private static final String BASEURL_LIGHTS = "http://";
     private static final String BRIDGE_IP = "localhost:8000";
     private static final String AUTHORIZED_USER = "newdeveloper";
-
-    private final  Map<String, Integer> colorValues = new HashMap<>();
+    private static boolean updateLights = true;
     private Blinker blinker;
+    private static final Map<String, Integer> colorValues;
 
-    //puts hue-color-values to color as string
-    public LightService() {
+    static {
+        colorValues = new HashMap<>();
         colorValues.put("orange", 4444);
         colorValues.put("green", 25500);
-        colorValues.put("red",65136);
+        colorValues.put("red", 65136);
+    }
+
+
+    public void stopUpdatingLights() {
+        this.updateLights = false;
+        HttpSession session = SessionUtils.session();
+        session.setAttribute("updateLights", false);
+    }
+
+
+    public void updateLights(List<TaxiModel> taxiModels) {
+        HttpSession session = SessionUtils.session();
+        session.setAttribute("updateLights", true);
+        while (this.updateLights) {
+            for (TaxiModel taxi : taxiModels) {
+                try {
+                    if (taxi.getStatus().equals(TaxiStatus.FREE)) {
+                        changeColor(taxi.getId() + "", "green");
+                    } else if (taxi.getStatus().equals(TaxiStatus.DELAY)) {
+                        blink(Integer.toString(taxi.getId()));
+                    } else if (taxi.getStatus().equals(TaxiStatus.ONTIME)) {
+                        changeColor(taxi.getId() + "", "orange");
+                    } else {
+                        turnLightOff(taxi.getId() + "");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void turnLightOff(String id) throws IOException {
@@ -65,7 +101,7 @@ public class LightService {
     }
 
     public void blink(String id) throws IOException, InterruptedException {
-        blinker = new Blinker(this,"1" );
+        blinker = new Blinker(this, "1");
         blinker.start();
         Thread.sleep(10000);
         blinker.interrupt();
@@ -74,7 +110,7 @@ public class LightService {
 
     void connectToLights(String id, String command) throws IOException {
         URL url;
-        url = new URL(BASEURL_LIGHTS + BRIDGE_IP + "/api/" + AUTHORIZED_USER + "/" + id + "/state/" );
+        url = new URL(BASEURL_LIGHTS + BRIDGE_IP + "/api/" + AUTHORIZED_USER + "/" + id + "/state/");
         URLConnection con = (URLConnection) url.openConnection();
         ((sun.net.www.protocol.http.HttpURLConnection) con).setRequestMethod("PUT");
         con.setDoOutput(true);

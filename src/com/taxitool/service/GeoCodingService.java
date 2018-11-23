@@ -7,13 +7,9 @@ import com.taxitool.endpoint.DefaultEndpointService;
 import com.taxitool.facade.GeoCodingFacade;
 import com.taxitool.model.geocoding.GeoModel;
 import com.taxitool.model.geocoding.NavigationPosition;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 

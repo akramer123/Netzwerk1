@@ -320,14 +320,14 @@
 </script>
 
 <form action="#" th:action="@{/route}" th:object="${taxi}" method="post">
-    <p>Address: <input type="text" th:field="*{address}"/></p>
+    <p>Startadresse: <input type="text" th:field="*{address}"/></p>
     <input type="datetime-local" placeholder="" th:value="*{estimatedTime}" th:field="*{estimatedTime}"/>
     <p><input type="submit" value="Suchen"/>
     </p>
 </form>
 
 <form action="#" th:action="@{/calcRoute}" th:object="${taxi}" method="post">
-    <p>Address: <input type="text" th:field="*{endPoint}"/></p>
+    <p>Zieladresse: <input type="text" th:field="*{endPoint}"/></p>
     <p><input type="submit" value="Route berechnen"/>
     </p>
 </form>
@@ -355,6 +355,7 @@
 -->
 <span th:if="${routeInfo != null && routeInfo.summary != null}">
 <p th:utext="${routeInfo.summary.text}"></p>
+    <p th:text="${taxi.status}"></p>
 <a href="/sync"> Sync</a></button>
 
 

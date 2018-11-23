@@ -37,4 +37,14 @@
         <property name="lightFacade" ref="lightFacade"/>
     </bean>
 
+    <alias name="taxiService" alias="taxiService"/>
+    <bean id="taxiService" class="com.taxitool.service.TaxiService">
+        <property name="geoCodingService" ref="geoCodingService"/>
+        <property name="routingService" ref="routingService"/>
+    </bean>
+
+    <alias name="databaseService" alias="databaseService"/>
+    <bean id="databaseService" class="com.taxitool.service.DatabaseService"/>
+
+
 </beans>

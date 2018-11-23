@@ -1,12 +1,6 @@
 package com.taxitool.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import static java.lang.Thread.interrupted;
-import com.taxitool.model.light.State;
-
 import java.io.IOException;
-import java.net.URL;
 
 
 //Thread class makes it possible to blink the light and interrupt it.
