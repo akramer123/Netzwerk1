@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
-import javax.xml.crypto.Data;
 
 @Controller
 @SessionAttributes("taxi")
@@ -76,10 +75,7 @@ public class HomePageController {
 
     @GetMapping("/sync")
     public RedirectView syncRoute(@ModelAttribute("taxi") TaxiModel taxiModel, RedirectAttributes redirectAttributes) {
-
-        Route route = routingService.syncRoute(taxiModel);
-        taxiModel.setStatus(TaxiStatus.ONTIME);
-
+        routingService.syncRoute(taxiModel);
         redirectAttributes.addFlashAttribute("taxi", taxiModel);
         return new RedirectView("/taxi/" + taxiModel.getId());
     }

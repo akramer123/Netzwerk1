@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class TaxiModel {
+public class TaxiModel implements Cloneable{
 
     private int id;
     private TaxiStatus status;
@@ -19,6 +19,17 @@ public class TaxiModel {
 
     public TaxiModel() {
         this.status = TaxiStatus.FREE;
+    }
+
+    public TaxiModel(TaxiModel copy){
+        this.id=copy.getId();
+        this.status=copy.getStatus();
+        this.estimatedTime=copy.getEstimatedTime();
+        this.address=copy.getAddress();
+        this.latitude=copy.getLatitude();
+        this.longtitude=copy.getLongtitude();
+        this.route=copy.getRoute();
+        this.endPoint=copy.getEndPoint();
     }
 
     public String getAddress() {
@@ -83,5 +94,10 @@ public class TaxiModel {
 
     public void setEndPoint(String endPoint) {
         this.endPoint = endPoint;
+    }
+
+    @Override
+    public TaxiModel clone() {
+        return new TaxiModel(this);
     }
 }

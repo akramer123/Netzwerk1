@@ -356,8 +356,6 @@
 <span th:if="${routeInfo != null && routeInfo.summary != null}">
 <p th:utext="${routeInfo.summary.text}"></p>
     <p th:text="${taxi.status}"></p>
-<a href="/sync"> Sync</a></button>
-
 
     <table>
     <thead>
@@ -376,6 +374,7 @@
     </tbody>
 </table>
 </span>
-<img src="/images/TAXI.jpg"/>
+<button>
+    <a href="/">Back</a></button>
 </body>
 </html>

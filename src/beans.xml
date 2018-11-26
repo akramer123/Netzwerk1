@@ -33,9 +33,7 @@
     </bean>
 
     <alias name="lightService" alias="lightService"/>
-    <bean id="lightService" class="com.taxitool.service.LightService">
-        <property name="lightFacade" ref="lightFacade"/>
-    </bean>
+    <bean id="lightService" class="com.taxitool.service.LightService"/>
 
     <alias name="taxiService" alias="taxiService"/>
     <bean id="taxiService" class="com.taxitool.service.TaxiService">

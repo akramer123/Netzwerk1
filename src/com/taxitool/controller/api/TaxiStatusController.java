@@ -4,16 +4,11 @@ import com.taxitool.model.TaxiModel;
 import com.taxitool.model.TaxiStatus;
 import com.taxitool.service.DatabaseService;
 import com.taxitool.service.TaxiService;
-import com.taxitool.utils.SessionUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.xml.crypto.Data;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
