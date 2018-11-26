@@ -10,12 +10,4 @@ import java.util.stream.Collectors;
 
 public class LightFacade {
 
-
-    public String getColorMode(State state) {
-        return state.getColormode();
-    }
-
-    public void setState(State state) {
-        state.setOn(false);
-    }
 }

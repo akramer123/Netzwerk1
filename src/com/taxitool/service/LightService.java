@@ -103,8 +103,5 @@ public class LightService {
         }
     }
 
-    public void setLightFacade(LightFacade lightFacade) {
-        this.lightFacade = lightFacade;
-    }
 
 }
