@@ -10,7 +10,10 @@ public class Server extends Thread {
         private  static final int TIMEOUT = 20_000;
         private int dataLength = 0;
         boolean outOfTime = false;
+
 //        private   BitRateTest bitRateTest;
+
+
         private   String protocol;
         private  static double[] receiveDataRate = new double[Constants.TEST_REPEATS];
         private static int i = 0;
@@ -24,10 +27,18 @@ public class Server extends Thread {
         public Server(String protocol) {
             this.protocol = protocol;
         }
-        // public Server(BitRateTest bitRateTest, String protocol) {
-             // this.bitRateTest = bitRateTest;
-             // this.protocol = protocol;
-        // }
+
+      public Server(BitRateTest bitRateTest, String protocol) {
+              this.bitRateTest = bitRateTest;
+             this.protocol = protocol;
+       }
+/*
+        public Server(BitRateTest bitRateTest, String protocol) {
+             this.bitRateTest = bitRateTest;
+             this.protocol = protocol;
+        }
+*/
+
 
 
         public long receivePackets(String protocol) throws IOException {

@@ -3,6 +3,7 @@ import org.knowm.xchart.*;
 import java.io.IOException;
 
 public class BitRateTest {
+/*
     private static final String UDP = "udp";
     private static final String TCP = "tcp";
     private static final int testRepeats = Constants.TEST_REPEATS;
@@ -97,6 +98,7 @@ public class BitRateTest {
     }
 
 
+*/
 
 
 }
