@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 
 public class Client extends Thread{
-        private static final int RUNNING_TIME = 10_000;
+        private static final int RUNNING_TIME = 30_000;
         private static int DELAY;
         private static int N;
         private static final int PACKET_LENGTH = 1_400;
@@ -12,7 +12,7 @@ public class Client extends Thread{
         private int dataLength;
         private int packetCounter = 0;
         private  String protocol;
-        private  BitRateTest bitRateTest;
+      //  private  BitRateTest bitRateTest;
         private static double[] sendDataRate = new double[Constants.TEST_REPEATS];
         private static int i = 0;
 
@@ -24,6 +24,7 @@ public class Client extends Thread{
             this.ADRESS = adress;
         };
 
+/*
         public Client(int n, int delay, BitRateTest bitRateTest, String protocol, String adress) throws SocketException {
             this.N = n;
             this.DELAY = delay;
@@ -31,6 +32,7 @@ public class Client extends Thread{
             this.protocol =  protocol;
             this.ADRESS = adress;
         }
+*/
 
     public static void main(String[] args) throws IOException, InterruptedException {
             Client client = new Client(100,5000,Constants.UDP, args[0]);
