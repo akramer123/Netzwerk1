@@ -7,30 +7,26 @@ import java.net.*;
 public class Server extends Thread {
         private  static final int PACKET_LENGTH = 1_400;
         private  static final int PORT = 90;
-        private  static final int TIMEOUT = 10_000;
+        private  static final int TIMEOUT = 20_000;
         private int dataLength = 0;
         boolean outOfTime = false;
-     //   private   BitRateTest bitRateTest;
+        private   BitRateTest bitRateTest;
         private   String protocol;
         private  static double[] receiveDataRate = new double[Constants.TEST_REPEATS];
         private static int i = 0;
 
         public static void main(String[] args) throws IOException {
-            Server server = new Server(Constants.UDP);
+            Server server = new Server(args[0]);
             server.start();
-
         }
 
         public Server(String protocol) {
             this.protocol = protocol;
         }
-/*
         public Server(BitRateTest bitRateTest, String protocol) {
              this.bitRateTest = bitRateTest;
              this.protocol = protocol;
         }
-*/
-
 
         public long receivePackets(String protocol) throws IOException {
             byte[] receiveData = new byte[PACKET_LENGTH];
@@ -43,11 +39,12 @@ public class Server extends Thread {
         }
 
         private  long receivePacketsUDP(long start, byte[] receiveData) throws IOException {
+            System.out.println("receive packets udp");
         outOfTime = false;
         dataLength = 0;
               try(DatagramSocket serverSocket = new DatagramSocket(PORT);) {
                   serverSocket.setSoTimeout(TIMEOUT);
-                  while (!outOfTime) {
+                  while (!outOfTime  && !isInterrupted()) {
                       try {
                           DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                           serverSocket.receive(receivePacket);
@@ -57,46 +54,52 @@ public class Server extends Thread {
                       }
                   }
               }
+            System.out.println("ended receive packets");
         return System.currentTimeMillis();
        }
 
     private  long receivePacketsTCP(long start, byte[] receiveData) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        Socket socket = serverSocket.accept();
-        serverSocket.setSoTimeout(TIMEOUT);
-        boolean isConnected = true;
-        while (! outOfTime && isConnected) {
-            try {
-                InputStream inputStream = socket.getInputStream();
-                try {
-                    inputStream.read(receiveData);
+      try(ServerSocket serverSocket = new ServerSocket(PORT);) {
+          Socket socket;
+          serverSocket.setSoTimeout(TIMEOUT);
+          boolean isConnected = true;
+          socket = serverSocket.accept();
+          socket.setSoLinger(true,0);
+          InputStream inputStream = socket.getInputStream();
+          int read = inputStream.read(receiveData);
+            while (!outOfTime && isConnected  && read != -1) {
+                    try {
+                        try {
+                            read = inputStream.read(receiveData);
+                            dataLength = dataLength + read;
+                        } catch (SocketException socketException) {
+                            isConnected = false;
+                        }
+                    }
+                    catch (SocketTimeoutException exception) {
+                        outOfTime = true;
+                    }
                 }
-                catch(SocketException socketException) {
-                    isConnected = false;
-                }
-                dataLength = dataLength + receiveData.length;
             }
-            catch(SocketTimeoutException exception) {
-                outOfTime = true;
-            }
-        }
-        System.out.println("log" + socket.getInputStream().read());
+      catch (SocketTimeoutException exception) {
+          outOfTime = true;
+      }
         return System.currentTimeMillis();
     }
 
         public long calculateDataRate(long start, long stop) {
-            long timeInSeconds = (stop - start) / Constants.FACTOR_KILO;
-            int dataLengthInKBit = (dataLength * Constants.FACTOR_BYTES_TO_BITS) / Constants.FACTOR_KILO;
+            long timeInSeconds = protocol.equals(Constants.TCP) ? (stop - start) : stop -start - TIMEOUT;
+            int dataLengthInKBit = (dataLength * Constants.FACTOR_BYTES_TO_BITS);
             long dataRate = outOfTime && dataLength == 0 || timeInSeconds == 0? 0 : dataLengthInKBit / timeInSeconds;
             return dataRate;
         }
 
 
 
-
     @Override
     public void run() {
         try {
+            System.out.println("started server");
             long received = receivePackets(protocol);
             putReceiveDataRate(received);
         } catch (IOException e) {

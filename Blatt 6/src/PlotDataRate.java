@@ -7,13 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class PlotDataRateFromLogFiles {
+
+/**with this class you can plot given data rate**/
+public class PlotDataRate {
 
 
     public static void main(String[] args) throws IOException {
         double[] sendDataRate = new double[3];
         double[] receiveDataRate = new double[3];
-        PlotDataRateFromLogFiles plotDataRateFromLogFiles = new PlotDataRateFromLogFiles();
+        PlotDataRate plotDataRateFromLogFiles = new PlotDataRate();
         int i = 0;
         try(
         FileReader fileReaderServer = new FileReader("C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Blatt 6\\PlotsDurchsatz\\server.txt");

@@ -2,8 +2,10 @@ import org.knowm.xchart.*;
 
 import java.io.IOException;
 
+
+
+/**this class allows automated testing on localhost**/
 public class BitRateTest {
-/*
     private static final String UDP = "udp";
     private static final String TCP = "tcp";
     private static final int testRepeats = Constants.TEST_REPEATS;
@@ -14,22 +16,11 @@ public class BitRateTest {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         BitRateTest bitRateTest = new BitRateTest();
-        bitRateTest.testDataRate(UDP, 50,5000, args[0]);
-        Client.printSendDataRate();
+        bitRateTest.testDataRate(UDP, 200,500,"localhost");
+/*        Client.printSendDataRate();
         Server.printReceiveDataRate();
-        System.out.println("Average Receive Data Rate" + bitRateTest.calculateAverageReceiveDataRate());
-        System.out.println("Average Send Data Rate" + bitRateTest.calculateAverageSendDataRate());
-        System.out.println("Standard Aviation Receive Data" + bitRateTest.calculateStandardAviationReceiveDataRate());
-        System.out.println("Standard Aviation Send Data " + bitRateTest.calculateStandardAviationSendDataRate());
-
-     //   bitRateTest.testDataRate(UDP, 10,1000);
-     //   bitRateTest.testDataRate(UDP, 1000,3000);
-
-      //  bitRateTest.testDataRate(UDP, 50,500);
-
+        bitRateTest.plotData("n=200_k=50_udp");*/
     }
-
-
 
 
     private void printReceiveDataRate() {
@@ -37,7 +28,6 @@ public class BitRateTest {
         for (int i = 0; i < testRepeats; i++) {
             System.out.print(receiveDataRate[i] + " ");
         }
-
     }
 
 
@@ -79,14 +69,15 @@ public class BitRateTest {
     }
 
     private void testDataRate(String protocol, int n, int delay, String adress) throws IOException, InterruptedException {
+
         for (i = 0; i < testRepeats; i++){
             Server server = new Server(this, protocol);
-            server.start();
+
             Client client = new Client( n, delay, this, protocol, adress);
-            client.start();
-            server.join();
-            client.join();
-      }
+            client.sendPacket(protocol);
+            server.receivePackets(protocol);
+
+         }
     }
 
 
@@ -96,9 +87,4 @@ public class BitRateTest {
         BitmapEncoder.saveBitmap(chart, ""+ plotName, BitmapEncoder.BitmapFormat.PNG);
         new SwingWrapper(chart).displayChart();
     }
-
-
-*/
-
-
 }

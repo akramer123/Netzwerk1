@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 
 public class Client extends Thread{
-        private static final int RUNNING_TIME = 30_000;
+        private static final int RUNNING_TIME = 20_000;
         private static int DELAY;
         private static int N;
         private static final int PACKET_LENGTH = 1_400;
@@ -12,7 +12,7 @@ public class Client extends Thread{
         private int dataLength;
         private int packetCounter = 0;
         private  String protocol;
-      //  private  BitRateTest bitRateTest;
+        private  BitRateTest bitRateTest;
         private static double[] sendDataRate = new double[Constants.TEST_REPEATS];
         private static int i = 0;
 
@@ -24,7 +24,6 @@ public class Client extends Thread{
             this.ADRESS = adress;
         };
 
-/*
         public Client(int n, int delay, BitRateTest bitRateTest, String protocol, String adress) throws SocketException {
             this.N = n;
             this.DELAY = delay;
@@ -32,16 +31,16 @@ public class Client extends Thread{
             this.protocol =  protocol;
             this.ADRESS = adress;
         }
-*/
 
     public static void main(String[] args) throws IOException, InterruptedException {
-            Client client = new Client(100,5000,Constants.UDP, args[0]);
+            Client client = new Client(5000,2000,args[1], args[0]);
             client.start();
+
     }
 
 
 
-    public long sendPacket(String protocol) throws IOException, InterruptedException {
+    public double sendPacket(String protocol) throws IOException, InterruptedException {
         isUDP = protocol.equals(Constants.UDP);
         long start = System.currentTimeMillis();
         long expectedStop = start + RUNNING_TIME;
@@ -56,7 +55,7 @@ public class Client extends Thread{
              packetCounter = 0;
             try(DatagramSocket clientSocket = new DatagramSocket();) {
                 InetAddress IPAddress = InetAddress.getByName(ADRESS);
-                while (System.currentTimeMillis() < expectedStop) {
+                while (System.currentTimeMillis() < expectedStop  && !interrupted()) {
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, PORT);
                     clientSocket.send(sendPacket);
                     packetCounter = packetCounter + 1;
@@ -70,25 +69,44 @@ public class Client extends Thread{
         }
 
         private long sendPacketsTCP (long start, long expectedStop) throws IOException, InterruptedException {
-            Socket clientSocket = new Socket(ADRESS, PORT);
-            OutputStream outputStream = clientSocket.getOutputStream();
-            byte[] sendData = new byte[PACKET_LENGTH];
-            while (System.currentTimeMillis() < expectedStop) {
-                outputStream.write(sendData);
-                packetCounter = packetCounter + 1;
-                if (packetCounter % N == 0) {
-                    Thread.sleep(DELAY);
+            System.out.println("send packets tcp");
+
+
+            try( Socket clientSocket = new Socket(ADRESS, 90);
+                OutputStream outputStream = clientSocket.getOutputStream()) {
+
+                System.out.println("new socket");
+                System.out.println("outputStream");
+                byte[] sendData = new byte[PACKET_LENGTH];
+                InetAddress IPAddress = InetAddress.getByName(ADRESS);
+
+                while (System.currentTimeMillis() < expectedStop) {
+
+                    outputStream.write(sendData);
+                    outputStream.flush();
+                    packetCounter = packetCounter + 1;
+                    if (packetCounter % N == 0) {
+                        Thread.sleep(DELAY);
+                    }
+
+
                 }
+
+
             }
+
+
+
             long realStop = System.currentTimeMillis();
             return realStop;
         }
 
 
-        private long calculateRealSendRate(long start, long stop) {
-            long timeInSeconds = (stop - start) / Constants.FACTOR_KILO;
+
+        private double calculateRealSendRate(long start, long stop) {
+            double timeInSeconds = (stop - start) / Constants.FACTOR_KILO;
             int dataLengthInKBit = (packetCounter * PACKET_LENGTH * Constants.FACTOR_BYTES_TO_BITS) / Constants.FACTOR_KILO;
-            long realSendRate = dataLengthInKBit / timeInSeconds;
+            double realSendRate = dataLengthInKBit / timeInSeconds;
             System.out.println("Real Send Rate  is: " + realSendRate);
             return realSendRate ;
 
@@ -96,10 +114,11 @@ public class Client extends Thread{
 
 
 
-    public long calculateExpectedSendRate() {
-        long delayInSeconds = DELAY  / Constants.FACTOR_KILO;
+    public double calculateExpectedSendRate() {
+        double delayInSeconds = DELAY  / (double )Constants.FACTOR_KILO;
+        System.out.println(DELAY);
         int dataLengthInKBit = (PACKET_LENGTH * N * Constants.FACTOR_BYTES_TO_BITS) / Constants.FACTOR_KILO;
-        long calculatedSendRate = delayInSeconds == 0 ? 0 :  dataLengthInKBit / delayInSeconds;
+        double calculatedSendRate = delayInSeconds == 0 ? 0 :  dataLengthInKBit / delayInSeconds;
         System.out.println("Expected Send Rate  is: " + calculatedSendRate);
         return calculatedSendRate;
     }
@@ -111,9 +130,10 @@ public class Client extends Thread{
         try {
             System.out.println("k = " + DELAY + " n = " + N);
             calculateExpectedSendRate();
-            long sent = sendPacket(protocol);
-            putSendDataRate(sent);
 
+            double sent = sendPacket(protocol);
+            putSendDataRate(sent);
+          System.exit(0);
 
         } catch (IOException e) {
             e.printStackTrace();
