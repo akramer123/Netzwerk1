@@ -7,7 +7,7 @@ import java.net.*;
 public class Server extends Thread {
         private  static final int PACKET_LENGTH = 1_400;
         private  static final int PORT = 90;
-        private  static final int TIMEOUT = 20_000;
+        private  static final int TIMEOUT = 10_000;
         private int dataLength = 0;
         boolean outOfTime = false;
         private   BitRateTest bitRateTest;
