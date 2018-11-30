@@ -35,10 +35,10 @@ public class Client {
     public static void main(String[] args) throws IOException, InterruptedException {
         Client client = new Client(5000,2000,args[1], args[0]);
         System.out.println("k = " + DELAY + " n = " + N);
-        calculateExpectedSendRate();
+        client.calculateExpectedSendRate();
 
-        double sent = sendPacket(protocol);
-        putSendDataRate(sent);
+        double sent = client.sendPacket(args[1]);
+        client.putSendDataRate(sent);
 
     }
 
@@ -59,7 +59,7 @@ public class Client {
              packetCounter = 0;
             try(DatagramSocket clientSocket = new DatagramSocket();) {
                 InetAddress IPAddress = InetAddress.getByName(ADRESS);
-                while (System.currentTimeMillis() < expectedStop  && !interrupted()) {
+                while (System.currentTimeMillis() < expectedStop) {
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, PORT);
                     clientSocket.send(sendPacket);
                     packetCounter = packetCounter + 1;
