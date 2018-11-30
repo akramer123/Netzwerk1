@@ -22,27 +22,39 @@ public class TaxiStatusController {
     @RequestMapping(value = "/status", method = GET)
     public String getStatus(@RequestParam(value = "id") String id) {
         TaxiModel taxi = getTaxi(id);
-        return taxi.getStatus().name();
+        if(taxi!=null) {
+            return taxi.getStatus().name();
+        }
+        return "Taxi not found";
     }
 
     @RequestMapping(value = "/terminate", method = POST)
     public String terminate(@RequestParam(value = "id") String id) {
+        //TODO: RETURN NOT 200 Code on error
         TaxiModel taxi = getTaxi(id);
-        taxi.setStatus(TaxiStatus.FREE);
-        taxi.setRoute(null);
-        taxi.setEndPoint(null);
-        DatabaseService.addTaxi(taxi);
-        return "Taxi" + id + "is now free";
+        if(taxi != null) {
+            taxi.setStatus(TaxiStatus.FREE);
+            taxi.setRoute(null);
+            taxi.setEndPoint(null);
+            taxi.setEstimatedTime(null);
+            DatabaseService.addTaxi(taxi);
+            return "Taxi" + id + " is now free";
+        }
+        return "Taxi not found";
     }
 
     @RequestMapping(value = "/inactive", method = POST)
     public String setInactive(@RequestParam(value = "id") String id) {
         TaxiModel taxi = getTaxi(id);
-        taxi.setStatus(TaxiStatus.INACTIVE);
-        taxi.setRoute(null);
-        taxi.setEndPoint(null);
-        DatabaseService.addTaxi(taxi);
-        return "Taxi" + id + "is now inactive";
+        if(taxi != null) {
+            taxi.setStatus(TaxiStatus.INACTIVE);
+            taxi.setRoute(null);
+            taxi.setEndPoint(null);
+            taxi.setEstimatedTime(null);
+            DatabaseService.addTaxi(taxi);
+            return "Taxi" + id + "is now inactive";
+        }
+        return "Taxi not found";
     }
 
     @RequestMapping(value = "/detour", method = POST)
@@ -50,19 +62,20 @@ public class TaxiStatusController {
 
         TaxiModel taxi = getTaxi(id);
         if (taxi != null) {
+            taxi.setEndPoint(address);
             boolean updated = taxiService.updateRoute(taxi, address);
             if (updated) {
-                taxi.setEndPoint(address);
                 DatabaseService.addTaxi(taxi);
                 return "Address updated";
             }
         }
-        return "Address not updated";
+        return "Address not updated because taxi was not found";
     }
 
     @RequestMapping(value = "/getlocation", method = GET)
     public String getLocation(@RequestParam(value = "id") String id) {
 
+        //TODO: check encoding
         TaxiModel taxi = getTaxi(id);
         if (taxi != null) {
             return taxi.getAddress();

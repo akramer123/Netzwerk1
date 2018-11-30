@@ -22,14 +22,11 @@ public class GeoCodingService {
 
     public NavigationPosition getGeoCode(String searchText) {
 
-        //TODO: add Threads
-
         String apiUrlString = TaxiConstants.BASEURL_GEOCODE + "/" + TaxiConstants.GEOCODE_VERSION + "/" + TaxiConstants.GEOCODE_RETURNFILE;
         Map<String, String> parameters = new HashMap<>();
         parameters.put("searchtext", searchText);
 
         String content = endpointService.callRESTMethodHERE(apiUrlString, parameters);
-
 
         ObjectMapper mapper = new ObjectMapper();
         GeoModel geoModel = null;

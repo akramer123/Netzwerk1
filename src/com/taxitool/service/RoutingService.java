@@ -53,21 +53,27 @@ public class RoutingService {
     private void checkEvery5Seconds(TaxiModel taxi) {
 
         Thread t = new Thread(() -> {
-
+            TaxiModel taxiModel = null;
             TaxiModel handledTaxi = taxi.clone();
             while (handledTaxi.getStatus() == TaxiStatus.ONTIME) {
 
                 try {
                     Thread.sleep(3000);
-                    TaxiModel taxiModel = DatabaseService.getTaxi(handledTaxi.getId());
-                    System.out.println("Checking route of taxi " + handledTaxi.getId());
-                    syncRoute(handledTaxi);
-                    taxiModel.setStatus(taxiService.onTime(taxiModel));
-                    DatabaseService.addTaxi(taxiModel);
-                    handledTaxi.setStatus(taxiModel.getStatus());
+                    taxiModel = DatabaseService.getTaxi(handledTaxi.getId());
+                    if (taxiModel == null) {
+                        DatabaseService.addTaxi(handledTaxi);
+                    } else {
+                        System.out.println("Checking route of taxi " + handledTaxi.getId() + ": " + handledTaxi.getAddress() + " -> " + handledTaxi.getEndPoint());
+                        syncRoute(handledTaxi);
+                        taxiModel.setStatus(taxiService.onTime(taxiModel));
+                        handledTaxi.setStatus(taxiModel.getStatus());
+                    }
                 } catch (InterruptedException e) {
                     System.out.println("Thread is interrupted");
                 }
+            }
+            if (taxiModel != null) {
+                DatabaseService.addTaxi(taxiModel);
             }
         });
         t.start();

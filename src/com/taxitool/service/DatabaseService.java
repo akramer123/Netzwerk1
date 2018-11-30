@@ -13,10 +13,10 @@ public class DatabaseService {
     }
 
     public static TaxiModel getTaxi(int id) {
-        return taxiModelList.get(id).clone();
+        return taxiModelList.get(id);
     }
 
-    public static int getNumbersOfTaxis(){
+    public static int getNumbersOfTaxis() {
         return taxiModelList.size();
     }
 

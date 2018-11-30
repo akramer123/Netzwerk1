@@ -1,12 +1,10 @@
 package com.taxitool.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.taxitool.facade.LightFacade;
 import com.taxitool.model.TaxiModel;
 import com.taxitool.model.TaxiStatus;
 import com.taxitool.model.light.State;
 
-import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;

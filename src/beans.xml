@@ -11,10 +11,6 @@
     <alias name="geoCodingFacade" alias="geoCodingFacade"/>
     <bean id="geoCodingFacade" class="com.taxitool.facade.GeoCodingFacade">
     </bean>
-    <alias name="lightFacade" alias="lightFacade"/>
-    <bean id="lightFacade" class="com.taxitool.facade.LightFacade">
-    </bean>
-
 
     <!-- Services -->
     <alias alias="endpointService" name="endpointService"/>

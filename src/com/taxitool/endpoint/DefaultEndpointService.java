@@ -26,7 +26,8 @@ public class DefaultEndpointService {
             HttpsURLConnection urlc = (HttpsURLConnection)url.openConnection();
             urlc.setRequestMethod("GET");
             urlc.setRequestProperty("Accept","*/*");
-            //use post mode
+
+            //TODO: remove?!
             urlc.setDoOutput(false);
             urlc.setAllowUserInteraction(false);
 
