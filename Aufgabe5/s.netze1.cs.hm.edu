@@ -1,0 +1,17 @@
+$TTL    86400 ;; could use $ORIGIN netze1.cs.hm.edu.
+@       IN      SOA   netze1.cs.hm.edu. root.localhost.  (
+                        1997022700 ; Serial
+                        3h      ; Refresh
+                        15      ; Retry
+                        1w      ; Expire
+                        3h )    ; Minimum
+
+netze1.cs.hm.edu.        IN      NS      s.netze1.cs.hm.edu.
+
+s       IN      A       192.168.0.254
+a       IN      A	192.168.0.1
+b       IN      A       192.168.0.2
+localhost in A          192.168.0.1
+mailserver   IN CNAME s
+
+netze1.cs.hm.edu.	IN MX 10 mailserver.netze1.cs.hm.edu.
