@@ -14,7 +14,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-public class TaxiStatusController {
+public class TaxiApiController {
 
     @Resource
     private TaxiService taxiService;

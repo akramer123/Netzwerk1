@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 
 @Controller
 @SessionAttributes("taxi")
-public class HomePageController {
+public class TaxiController {
 
     @Resource
     private GeoCodingService geoCodingService;
