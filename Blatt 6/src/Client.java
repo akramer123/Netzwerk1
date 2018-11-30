@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Client extends Thread{
+public class Client {
         private static final int RUNNING_TIME = 20_000;
         private static int DELAY;
         private static int N;
@@ -33,8 +33,12 @@ public class Client extends Thread{
         }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-            Client client = new Client(5000,2000,args[1], args[0]);
-            client.start();
+        Client client = new Client(5000,2000,args[1], args[0]);
+        System.out.println("k = " + DELAY + " n = " + N);
+        calculateExpectedSendRate();
+
+        double sent = sendPacket(protocol);
+        putSendDataRate(sent);
 
     }
 
@@ -125,22 +129,6 @@ public class Client extends Thread{
 
 
 
-    @Override
-    public void run() {
-        try {
-            System.out.println("k = " + DELAY + " n = " + N);
-            calculateExpectedSendRate();
-
-            double sent = sendPacket(protocol);
-            putSendDataRate(sent);
-          System.exit(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 

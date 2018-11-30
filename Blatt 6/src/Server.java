@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
 
-public class Server extends Thread {
+public class Server {
         private  static final int PACKET_LENGTH = 1_400;
         private  static final int PORT = 90;
         private  static final int TIMEOUT = 10_000;
@@ -17,7 +17,9 @@ public class Server extends Thread {
 
         public static void main(String[] args) throws IOException {
             Server server = new Server(args[0]);
-            server.start();
+            System.out.println("started server");
+            long received = server.receivePackets(server.getProtocol());
+            server.putReceiveDataRate(received);;
         }
 
         public Server(String protocol) {
@@ -44,7 +46,7 @@ public class Server extends Thread {
         dataLength = 0;
               try(DatagramSocket serverSocket = new DatagramSocket(PORT);) {
                   serverSocket.setSoTimeout(TIMEOUT);
-                  while (!outOfTime  && !isInterrupted()) {
+                  while (!outOfTime ) {
                       try {
                           DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                           serverSocket.receive(receivePacket);
@@ -96,18 +98,6 @@ public class Server extends Thread {
 
 
 
-    @Override
-    public void run() {
-        try {
-            System.out.println("started server");
-            long received = receivePackets(protocol);
-            putReceiveDataRate(received);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public  void putReceiveDataRate(double dataRate) {
         receiveDataRate[i] = dataRate;
          i = i +1 ;
@@ -122,5 +112,9 @@ public class Server extends Thread {
 
     }
 
+
+    private String getProtocol() {
+            return protocol;
+    }
 
 }
