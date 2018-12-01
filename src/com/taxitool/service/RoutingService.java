@@ -53,18 +53,16 @@ public class RoutingService {
     private void checkEvery5Seconds(TaxiModel taxi) {
 
         Thread t = new Thread(() -> {
-            TaxiModel taxiModel = null;
+            TaxiModel taxiModel;
             TaxiModel handledTaxi = taxi.clone();
             while (handledTaxi.getStatus() == TaxiStatus.ONTIME) {
 
                 try {
                     Thread.sleep(3000);
                     taxiModel = DatabaseService.getTaxi(handledTaxi.getId());
-                    if (taxiModel == null) {
-                        DatabaseService.addTaxi(handledTaxi);
-                    } else {
+                    if (taxiModel != null) {
                         System.out.println("Checking route of taxi " + handledTaxi.getId() + ": " + handledTaxi.getAddress() + " -> " + handledTaxi.getEndPoint());
-                        syncRoute(handledTaxi);
+                        syncRoute(taxiModel);
                         taxiModel.setStatus(taxiService.onTime(taxiModel));
                         handledTaxi.setStatus(taxiModel.getStatus());
                     }
@@ -72,39 +70,37 @@ public class RoutingService {
                     System.out.println("Thread is interrupted");
                 }
             }
-            if (taxiModel != null) {
-                DatabaseService.addTaxi(taxiModel);
-            }
         });
         t.start();
     }
 
 
     public void syncRoute(TaxiModel taxiModel) {
-        Waypoint first = taxiModel.getRoute().getResponse().getRoute().get(0).getWaypoint().get(0);
-        Waypoint second = taxiModel.getRoute().getResponse().getRoute().get(0).getWaypoint().get(1);
+        if(taxiModel.getRoute()!=null) {
+            Waypoint first = taxiModel.getRoute().getResponse().getRoute().get(0).getWaypoint().get(0);
+            Waypoint second = taxiModel.getRoute().getResponse().getRoute().get(0).getWaypoint().get(1);
 
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("routeId", taxiModel.getRoute().getResponse().getRoute().get(0).getRouteId());
-        parameters.put("waypoint0", "geo!" + first.getOriginalPosition().getLatitude() + "," + first.getOriginalPosition().getLongitude());
-        parameters.put("waypoint1", "geo!" + second.getMappedPosition().getLatitude() + "," + second.getMappedPosition().getLongitude());
-        parameters.put("mode", "fastest;car;traffic:enabled");
-        parameters.put("representation", "navigation");
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("routeId", taxiModel.getRoute().getResponse().getRoute().get(0).getRouteId());
+            parameters.put("waypoint0", "geo!" + first.getOriginalPosition().getLatitude() + "," + first.getOriginalPosition().getLongitude());
+            parameters.put("waypoint1", "geo!" + second.getMappedPosition().getLatitude() + "," + second.getMappedPosition().getLongitude());
+            parameters.put("mode", "fastest;car;traffic:enabled");
+            parameters.put("representation", "navigation");
 
-        String content = endpointService.callRESTMethodHERE(SYNCAPIURL, parameters);
+            String content = endpointService.callRESTMethodHERE(SYNCAPIURL, parameters);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        UpdateRoute route = null;
-        try {
-            route = mapper.readValue(content, UpdateRoute.class);
-            List<Route_> routes = taxiModel.getRoute().getResponse().getRoute();
-            routes.set(0, route.getResponse().getRoute());
-            taxiModel.getRoute().getResponse().setRoute(routes);
-        } catch (IOException e) {
-            e.printStackTrace();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            UpdateRoute route = null;
+            try {
+                route = mapper.readValue(content, UpdateRoute.class);
+                List<Route_> routes = taxiModel.getRoute().getResponse().getRoute();
+                routes.set(0, route.getResponse().getRoute());
+                taxiModel.getRoute().getResponse().setRoute(routes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     public void setEndpointService(DefaultEndpointService endpointService) {
