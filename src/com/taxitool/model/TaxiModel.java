@@ -1,3 +1,6 @@
+/**
+ * @author Andreas Kramer
+ */
 package com.taxitool.model;
 
 import com.taxitool.model.routing.Route;

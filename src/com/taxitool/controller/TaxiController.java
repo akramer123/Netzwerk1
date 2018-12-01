@@ -1,7 +1,10 @@
+/**
+ * @author Andreas Kramer
+ */
+
 package com.taxitool.controller;
 
 import com.taxitool.model.TaxiModel;
-import com.taxitool.model.TaxiStatus;
 import com.taxitool.model.geocoding.NavigationPosition;
 import com.taxitool.model.routing.Leg;
 import com.taxitool.model.routing.Route;

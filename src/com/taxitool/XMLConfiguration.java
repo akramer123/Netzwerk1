@@ -1,3 +1,6 @@
+/**
+ * @author Andreas Kramer
+ */
 package com.taxitool;
 
 import org.springframework.context.annotation.Configuration;

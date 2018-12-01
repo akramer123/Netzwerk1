@@ -1,3 +1,6 @@
+/**
+ * @author Andreas Kramer
+ */
 package com.taxitool.endpoint;
 
 import com.taxitool.utils.ParameterStringBuilder;

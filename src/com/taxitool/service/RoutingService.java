@@ -1,3 +1,6 @@
+/**
+ * @author Andreas Kramer
+ */
 package com.taxitool.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;

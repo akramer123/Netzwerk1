@@ -1,12 +1,13 @@
+/**
+ * @author Andreas Kramer
+ */
+
 package com.taxitool.controller.api;
 
 import com.taxitool.model.TaxiModel;
 import com.taxitool.model.TaxiStatus;
 import com.taxitool.service.DatabaseService;
 import com.taxitool.service.TaxiService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

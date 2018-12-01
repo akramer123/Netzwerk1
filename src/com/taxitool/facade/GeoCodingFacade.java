@@ -1,3 +1,6 @@
+/**
+ * @author Andreas Kramer
+ */
 package com.taxitool.facade;
 
 import com.taxitool.model.geocoding.*;
