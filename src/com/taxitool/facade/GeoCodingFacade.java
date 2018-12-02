@@ -12,8 +12,13 @@ import java.util.stream.Collectors;
 
 public class GeoCodingFacade {
 
+    /**
+     * get navigation positions from geocode result
+     * @param geoModel
+     * @return
+     */
     public NavigationPosition getGeoPosition(GeoModel geoModel) {
-        List<NavigationPosition> navigationPositions = new ArrayList();
+        List<NavigationPosition> navigationPositions = new ArrayList<>();
         Optional<View> viewModel = geoModel.getResponse().getView().stream().filter(v -> !v.getResult().isEmpty()).findFirst();
         if (viewModel.isPresent()) {
             List<Location> locations = viewModel.get().getResult().stream().map(Result::getLocation).collect(Collectors.toList());

@@ -7,6 +7,9 @@ import com.taxitool.model.TaxiModel;
 
 import java.util.*;
 
+/**
+ * static fake database
+ */
 public class DatabaseService {
 
     private static Map<Integer, TaxiModel> taxiModelList = new HashMap<>();

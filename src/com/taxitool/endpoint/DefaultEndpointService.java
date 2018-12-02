@@ -30,10 +30,6 @@ public class DefaultEndpointService {
             urlc.setRequestMethod("GET");
             urlc.setRequestProperty("Accept","*/*");
 
-            //TODO: remove?!
-            urlc.setDoOutput(false);
-            urlc.setAllowUserInteraction(false);
-
             //get result
             String inputLine;
             BufferedReader br = new BufferedReader(new InputStreamReader(urlc

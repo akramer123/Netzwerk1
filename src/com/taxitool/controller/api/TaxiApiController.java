@@ -36,7 +36,6 @@ public class TaxiApiController {
 
     @RequestMapping(value = "/terminate", method = POST, produces = "text/plain")
     public String terminate(@RequestParam(value = "id") String id, HttpServletResponse response) {
-        //TODO: RETURN NOT 200 Code on error
         TaxiModel taxi = getTaxi(id);
         if (taxi != null) {
             taxi.setStatus(TaxiStatus.FREE);

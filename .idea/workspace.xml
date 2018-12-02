@@ -2,22 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fed21394-8cca-41e2-b3a9-648cc2258b50" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/ApplicationMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/ApplicationMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/XMLConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/XMLConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/controller/TaxiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/controller/TaxiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/model/TaxiStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/model/TaxiStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taxitool/service/TaxiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taxitool/service/TaxiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/webapp/WEB-INF/views/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/WEB-INF/views/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +26,7 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="18" />
-          <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="1" />
@@ -46,7 +34,7 @@
           <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.8" value="4" />
-          <entry key="project.opened" value="18" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -54,7 +42,7 @@
           <entry key="NavigationPosition" value="1" />
           <entry key="css" value="2" />
           <entry key="gitignore" value="2" />
-          <entry key="java" value="151" />
+          <entry key="java" value="156" />
           <entry key="js" value="2" />
           <entry key="json" value="1" />
           <entry key="jsp" value="16" />
@@ -65,7 +53,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="2" />
-          <entry key="JAVA" value="151" />
+          <entry key="JAVA" value="156" />
           <entry key="JSON" value="1" />
           <entry key="JSP" value="16" />
           <entry key="JavaScript" value="2" />
@@ -78,7 +66,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="11" />
-          <entry key="java" value="9578" />
+          <entry key="java" value="9672" />
           <entry key="js" value="14" />
           <entry key="jsp" value="1380" />
           <entry key="properties" value="139" />
@@ -87,7 +75,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="9578" />
+          <entry key="JAVA" value="9672" />
           <entry key="JSP" value="1380" />
           <entry key="JavaScript" value="14" />
           <entry key="PLAIN_TEXT" value="11" />
@@ -101,62 +89,20 @@
     <favorites_list name="Netzwerk1" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/model/TaxiStatus.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+            <state relative-caret-position="120">
+              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/LightService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="55" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="55" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#297#298#0" expanded="true" />
+                <element signature="e#360#361#0" expanded="true" />
+                <element signature="e#407#408#0" expanded="true" />
+                <element signature="e#451#452#0" expanded="true" />
+                <element signature="e#496#497#0" expanded="true" />
+                <element signature="e#539#540#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -170,10 +116,18 @@
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#2404#2405#0" expanded="true" />
-                <element signature="e#2460#2461#0" expanded="true" />
-                <element signature="e#2528#2529#0" expanded="true" />
-                <element signature="e#2580#2581#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -194,7 +148,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
+            <state relative-caret-position="15">
               <caret line="3" selection-start-line="3" selection-end-line="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -203,13 +157,52 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/taxitool/XMLConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
-              <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+              <caret line="9" column="14" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="37" column="98" selection-start-line="37" selection-start-column="98" selection-end-line="37" selection-end-column="98" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="122">
+              <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -222,8 +215,6 @@
               <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#4599#4600#0" expanded="true" />
-                <element signature="e#4653#4654#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -301,19 +292,19 @@
         <option value="$PROJECT_DIR$/src/com/taxitool/service/LightService.java" />
         <option value="$PROJECT_DIR$/src/webapp/WEB-INF/views/index.jsp" />
         <option value="$PROJECT_DIR$/src/webapp/WEB-INF/views/taxis.jsp" />
-        <option value="$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/controller/TaxiController.java" />
-        <option value="$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java" />
-        <option value="$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/model/TaxiModel.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/model/TaxiStatus.java" />
-        <option value="$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/service/TaxiService.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/ApplicationMain.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java" />
         <option value="$PROJECT_DIR$/src/com/taxitool/XMLConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java" />
+        <option value="$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java" />
       </list>
     </option>
   </component>
@@ -349,8 +340,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -468,7 +459,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -659,11 +650,12 @@
       <workItem from="1543580562016" duration="2529000" />
       <workItem from="1543583221537" duration="190000" />
       <workItem from="1543666526014" duration="4335000" />
+      <workItem from="1543741690970" duration="117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="105442000" />
+    <option name="totallyTimeSpent" value="105559000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -678,7 +670,7 @@
     <frame x="0" y="23" width="1440" height="801" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49530515" visible="true" weight="0.2932761" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49530515" visible="true" weight="0.29756796" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -693,7 +685,7 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39915374" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32863188" />
+      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.32863188" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32863188" />
       <window_info anchor="bottom" id="CheckStyle" order="9" />
@@ -772,7 +764,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java</url>
-          <line>39</line>
+          <line>38</line>
           <properties />
           <option name="timeStamp" value="39" />
         </line-breakpoint>
@@ -808,7 +800,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java</url>
-          <line>75</line>
+          <line>74</line>
           <properties />
           <option name="timeStamp" value="72" />
         </line-breakpoint>
@@ -1125,19 +1117,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#3530#3531#0" expanded="true" />
-            <element signature="e#3598#3599#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/controller/HomeController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
@@ -1154,28 +1133,6 @@
           <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1200,41 +1157,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#4599#4600#0" expanded="true" />
-            <element signature="e#4653#4654#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/LightService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="105">
           <caret line="22" column="55" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1249,10 +1174,6 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#2404#2405#0" expanded="true" />
-            <element signature="e#2460#2461#0" expanded="true" />
-            <element signature="e#2528#2529#0" expanded="true" />
-            <element signature="e#2580#2581#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1269,8 +1190,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/TaxiConstants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
+        <state relative-caret-position="15">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/RoutingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -1280,9 +1211,68 @@
     <entry file="file://$PROJECT_DIR$/src/com/taxitool/XMLConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+          <caret line="9" column="14" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/controller/api/TaxiApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="37" column="98" selection-start-line="37" selection-start-column="98" selection-end-line="37" selection-end-column="98" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/endpoint/DefaultEndpointService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/facade/GeoCodingFacade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/GeoCodingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/taxitool/service/DatabaseService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#297#298#0" expanded="true" />
+            <element signature="e#360#361#0" expanded="true" />
+            <element signature="e#407#408#0" expanded="true" />
+            <element signature="e#451#452#0" expanded="true" />
+            <element signature="e#496#497#0" expanded="true" />
+            <element signature="e#539#540#0" expanded="true" />
           </folding>
         </state>
       </provider>
