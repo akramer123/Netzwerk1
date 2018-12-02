@@ -1,4 +1,7 @@
-package com.taxitool;
+/**
+ * @author Andreas Kramer
+ */
+package com.taxitool.model;
 
 public enum TaxiStatus {
 

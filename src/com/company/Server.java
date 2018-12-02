@@ -1,20 +1,10 @@
-package com;
-
-import com.sun.deploy.util.URLUtil;
-import com.sun.jndi.toolkit.url.UrlUtil;
-import com.sun.xml.internal.fastinfoset.EncodingConstants;
-import sun.awt.CharsetString;
+package com.company;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Server {
     private static final int PORT = 8082;
