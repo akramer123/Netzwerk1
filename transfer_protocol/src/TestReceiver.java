@@ -45,6 +45,7 @@ public class TestReceiver {
                     System.out.println("received crc" + receivedCrc);
                     boolean isRightChecksum = receivedCrc == crc.getValue();
                     System.out.println("CRC is" + isRightChecksum);
+                    System.out.println("alternating bit" + receiveData[1015]);
                     System.out.println(new String(receiveData));
                     crc.reset();
                 } catch (SocketTimeoutException exception) {

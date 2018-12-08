@@ -19,7 +19,7 @@ public class FileSender {
     private final byte[] fileData = new byte[1024];
     private State currentState;
     private int read;
-    private byte alternatingBit;
+    private int alternatingBit = 0;
 
 
 
@@ -27,14 +27,15 @@ public class FileSender {
         this.filename = filename;
         this.adress = adress;
 
-        currentState = State.WAIT_FOR_CALL_FROM_ABOVE;
+        currentState = State.WAIT_FOR_CALL_FROM_ABOVE_0;
 
         transition = new Transition[State.values().length][Message.values().length];
-        transition[State.WAIT_FOR_CALL_FROM_ABOVE.ordinal()][Message.GOT_CALL_FROM_ABOVE.ordinal()] = new SendNewPackage();
+        transition[State.WAIT_FOR_CALL_FROM_ABOVE_0.ordinal()][Message.GOT_CALL_FROM_ABOVE_0.ordinal()] = new SendNewPackage();
+        transition[State.WAIT_FOR_CALL_FROM_ABOVE_1.ordinal()][Message.GOT_CALL_FROM_ABOVE_1.ordinal()] = new SendNewPackage();
         transition[State.WAIT_FOR_ACK_0.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
-        transition[State.WAIT_FOR_ACK_0.ordinal()][Message.RECEIVED_ACK_0.ordinal()] = new ReceiveAck();
+        transition[State.WAIT_FOR_ACK_0.ordinal()][Message.RECEIVED_ACK_0.ordinal()] = new ReceiveAck0();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
-        transition[State.WAIT_FOR_ACK_1.ordinal()][Message.RECEIVED_ACK_1.ordinal()] = new ReceiveAck();
+        transition[State.WAIT_FOR_ACK_1.ordinal()][Message.RECEIVED_ACK_1.ordinal()] = new ReceiveAck1();
         System.out.println("INFO Sender constructed, current state: " + currentState);
 
         fileInputStream = new FileInputStream(filename);
@@ -42,14 +43,20 @@ public class FileSender {
 
     public static void main(String[] args) throws IOException {
         FileSender fileSender = new FileSender(args[0], args[1]);
-        fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE);
+        fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
 
         while (fileSender.getRead() != -1) {
-            if (fileSender.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE) {
-                fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE);
+            if (fileSender.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_0) {
+                fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
+            }
+            else if (fileSender.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_1) {
+                fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE_1);
             }
             else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_0) {
-                    fileSender.waitForAck((byte) 0);
+                    fileSender.waitForAck(0);
+            }
+            else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_1) {
+                fileSender.waitForAck(1);
             }
 
         }
@@ -57,13 +64,16 @@ public class FileSender {
     }
 
 
-    public void sendPacket(boolean packetIsNew) throws IOException {
+    public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
         InetAddress IPAddress = InetAddress.getByName(adress);
 
         /**send new data, if ack for old data was received**/
         if (packetIsNew) {
-            read = fileInputStream.read(fileData,0, 1016);
+            read = fileInputStream.read(fileData,0, 1015);
             crc.update(fileData);
+
+            /**add alternating bit to data**/
+            fileData[1015] =(byte) alternatingBit;
 
             /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data**/
             byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
@@ -94,7 +104,7 @@ public class FileSender {
 }
 
 
-    public void waitForAck(byte alternatingBit) throws IOException {
+    public void waitForAck(int alternatingBit) throws IOException {
         System.out.println("Waiting for ACK");
         try(DatagramSocket receiveSocket = new DatagramSocket(100);) {
             byte[] ackData = new byte[1024];
@@ -107,10 +117,10 @@ public class FileSender {
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
 
-                        if (alternatingBit == 1 && answer.contains("ACK1") || alternatingBit== 0 && answer.contains("ACK0")) {
+                        if (alternatingBit == 1 && answer.contains("ACK") || alternatingBit== 0 && answer.contains("ACK")) {
                         received = true;
                         System.out.println("received ack" + answer);
-                        currentState = State.WAIT_FOR_CALL_FROM_ABOVE;
+                        currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
                     }
                 } catch (SocketTimeoutException exception) {
@@ -141,12 +151,17 @@ public class FileSender {
         return failurePacket;
         }
 
+
+        public void flipAlternatingBit() {
+            alternatingBit = alternatingBit == 1 ? 0 : 1;
+        }
+
    enum State {
-       WAIT_FOR_CALL_FROM_ABOVE, WAIT_FOR_ACK_0, WAIT_FOR_ACK_1
+       WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_ACK_0, WAIT_FOR_ACK_1
    };
 
     enum Message {
-        GOT_CALL_FROM_ABOVE, TIMEOUT, RECEIVED_ACK_0, RECEIVED_ACK_1
+        GOT_CALL_FROM_ABOVE_0,GOT_CALL_FROM_ABOVE_1, TIMEOUT, RECEIVED_ACK_0, RECEIVED_ACK_1
     }
 
     /**
@@ -174,26 +189,41 @@ public class FileSender {
     class SendNewPackage extends Transition {
         @Override
         public State execute(Message input) throws IOException {
-            System.out.println("execute send packet");
-            sendPacket(true);
-            return State.WAIT_FOR_ACK_0;
+
+            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
+            System.out.println("execute send packet " + alternatingBit);
+            sendPacket(true, alternatingBit);
+            State returnState = alternatingBit == 0? State.WAIT_FOR_ACK_0 : State.WAIT_FOR_ACK_1;
+            return returnState;
         }
     }
 
     class ResendPackage extends Transition {
         @Override
         public State execute(Message input) throws IOException {
-            System.out.println("execute resend package");
-            sendPacket(false);
+
+            int alternatingBit = currentState == State.WAIT_FOR_ACK_0 ? 0 : 1;
+            System.out.println("execute resend package " + alternatingBit);
+            sendPacket(false, alternatingBit);
+            final State returnState = alternatingBit == 0 ? State.WAIT_FOR_ACK_0 : State.WAIT_FOR_ACK_1;
             return State.WAIT_FOR_ACK_0;
         }
     }
 
-    class ReceiveAck extends Transition {
+    class ReceiveAck0 extends Transition {
         @Override
         public State execute(Message input) {
-            System.out.println("Wait for call from above again.");
-            return State.WAIT_FOR_CALL_FROM_ABOVE;
+            System.out.println("Wait for call 1 from above");
+            return State.WAIT_FOR_CALL_FROM_ABOVE_1;
+        }
+    }
+
+
+    class ReceiveAck1 extends Transition {
+        @Override
+        public State execute(Message input) {
+            System.out.println("Wait for call 0 from above");
+            return State.WAIT_FOR_CALL_FROM_ABOVE_0;
         }
     }
 
