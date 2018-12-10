@@ -72,7 +72,8 @@ public class FileSender {
             read = fileInputStream.read(fileData,0, 1015);
             crc.update(fileData);
 
-            /**add alternating bit to data**/
+            /**add alternating bit to data
+             * **/
             fileData[1015] =(byte) alternatingBit;
 
             /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data**/
