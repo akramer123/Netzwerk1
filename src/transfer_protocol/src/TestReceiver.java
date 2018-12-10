@@ -8,8 +8,6 @@ import java.util.zip.CRC32;
 public class TestReceiver {
     private final CRC32 crc = new CRC32();
     DatagramSocket serverSocket = new DatagramSocket(90);
-    private static final int BUFFER_LENGTH = 1024;
-    static boolean outOfTime = false;
     private int read;
     private State currentState;
     private final Transition[][] transition;
