@@ -11,17 +11,19 @@ public class FileSender {
     private static final int BUFFER_LENGTH = 1024;
     private static final int TIMEOUT = 15000;
     private static final double PROBABILITY_PACKET_FAILURE = 0.05;
-
     private final String filename;
     private final String adress;
     private final CRC32 crc = new CRC32();
     private final Transition[][] transition;
     private final FileInputStream fileInputStream;
     private final DatagramSocket sendSocket = new DatagramSocket();
-    private final byte[] fileData = new byte[1024];
+    private  byte[] fileData = new byte[1024];
     private State currentState;
     private int read;
     private int alternatingBit = 0;
+    boolean streamClosed = false;
+    boolean finishedSending = false;
+    boolean receivedLastAck;
 
 
 
@@ -38,7 +40,6 @@ public class FileSender {
         transition[State.WAIT_FOR_ACK_0.ordinal()][Message.RECEIVED_ACK_0.ordinal()] = new ReceiveAck0();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.RECEIVED_ACK_1.ordinal()] = new ReceiveAck1();
-        System.out.println("INFO Sender constructed, current state: " + currentState);
 
         fileInputStream = new FileInputStream(filename);
     }
@@ -58,52 +59,74 @@ public class FileSender {
                     fileSender.waitForAck(0);
             }
             else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_1) {
-                fileSender.waitForAck(1);
+                    fileSender.waitForAck(1);
             }
 
         }
-        System.out.println("CRC" + fileSender.getCrc().getValue());
     }
 
 
     public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
         InetAddress IPAddress = InetAddress.getByName(adress);
+        if (!finishedSending) {
+            /**send new data, if ack for old data was received**/
+            if (packetIsNew) {
+                System.out.println("new packet");
+                try {
 
-        /**send new data, if ack for old data was received**/
-        if (packetIsNew) {
-            read = fileInputStream.read(fileData,0, 1015);
-            crc.update(fileData);
+                    fileData = new byte[1024];
+                    read = fileInputStream.read(fileData, 0, 1015);
+                    System.out.println(new String(fileData));
+                    //  System.out.println("read length"+ read);
+                } catch (IOException ioException) {
+                    streamClosed = true;
+                }
+                for (int i = 0; i < fileData.length; i++) {
+                    System.out.print(fileData[i] + " ");
 
-            /**add alternating bit to data
-             * **/
-            fileData[1015] =(byte) alternatingBit;
+                }
+                crc.update(fileData);
 
-            /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data**/
-            byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
-            Stream.iterate(0,i-> i+1).limit(8).forEach(i -> fileData[1016+i] = crcBytes[i]);
-            System.out.println("crc single packets" + crc.getValue());
-            System.out.println("crcBytes.length" + crcBytes.length);
+                /**add alternating bit to data
+                 * **/
+                fileData[1015] = (byte) alternatingBit;
+                /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data**/
+                byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
+                Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> fileData[1016 + i] = crcBytes[i]);
+            }
 
+            /**send original packet or packet with a bit failure**/
+            DatagramPacket datagramPacket;
+            if (!decideToSendPacketFailure()) {
+                datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
+            } else {
+                datagramPacket = new DatagramPacket(generatePacketFailure(fileData), BUFFER_LENGTH, IPAddress, PORT);
+                System.out.println("generated packet failure");
+            }
 
+            if (!streamClosed && !finishedSending) {
+                System.out.println("send packet");
+                sendSocket.send(datagramPacket);
 
+            }
+
+            crc.reset();
+
+            System.out.println("read" + read);
+            if (read < 1015) {
+                finishedSending = true;
+                System.out.println("Finished Sending");
+                System.exit(1);
+            }
+            if (finishedSending) {
+                System.out.println("closed input stream");
+                fileInputStream.close();
+                sendSocket.close();
+
+            }
+
+            currentState = State.WAIT_FOR_ACK_0;
         }
-
-        /**send original packet or packet with a bit failure**/
-        DatagramPacket datagramPacket;
-        if (!decideToSendPacketFailure()) {
-             datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
-        }
-        else {
-             datagramPacket = new DatagramPacket(generatePacketFailure(fileData), BUFFER_LENGTH, IPAddress, PORT);
-            System.out.println("generated packet failure");
-        }
-        sendSocket.send(datagramPacket);
-        crc.reset();
-        //read = fileInputStream.read(fileData);
-
-
-
-    currentState =State.WAIT_FOR_ACK_0;
 }
 
 
@@ -124,6 +147,9 @@ public class FileSender {
                         received = true;
                         System.out.println("received ack" + answer);
                         currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+                        if (finishedSending) {
+                            receivedLastAck = true;
+                        }
 
                     }
                 } catch (SocketTimeoutException exception) {
@@ -192,7 +218,6 @@ public class FileSender {
     class SendNewPackage extends Transition {
         @Override
         public State execute(Message input) throws IOException {
-
             int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
             System.out.println("execute send packet " + alternatingBit);
             sendPacket(true, alternatingBit);
