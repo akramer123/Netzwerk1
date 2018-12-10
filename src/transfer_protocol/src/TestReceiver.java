@@ -28,20 +28,8 @@ public class TestReceiver {
 
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         TestReceiver testReceiver = new TestReceiver();
-        /**int i = 0;
-         while (!outOfTime) {
-         /*      if (i % 100 == 0) {
-         Thread.sleep(20000);
-         }
-         testReceiver.receivePacketsUDP();
-         testReceiver.sendAck();
-         i++;
-         }
-         System.out.println("crc" + testReceiver.crc.getValue());
-         */
-
         testReceiver.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
 
         while (testReceiver.getRead() != -1) {
@@ -81,7 +69,6 @@ public class TestReceiver {
                 int alternatingBit = data[1015];
                 System.out.println("alternating bit" + alternatingBit);
 
-
                 currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
                 System.out.println("received packet " + new String(data));
@@ -92,18 +79,18 @@ public class TestReceiver {
                 outOfTime = true;
                 System.out.println("timeout");
                 processMessage(Message.TIMEOUT);
-                read=-1;
+                read = -1;
             }
         }
     }
 
 
-
-    public void sendAck() throws IOException {
+    public void sendAck(final int alternatingBit) throws IOException {
         try (DatagramSocket sendSocket = new DatagramSocket()) {
             InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
             byte[] fileData = ack.getBytes();
+            fileData[1015] = (byte) alternatingBit;
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
@@ -113,7 +100,7 @@ public class TestReceiver {
     }
 
 
-    public void processMessage(Message input) throws IOException {
+    public void processMessage(Message input) {
         System.out.println("INFO Received " + input + " in state " + currentState);
         Transition trans = transition[currentState.ordinal()][input.ordinal()];
         if (trans != null) {
@@ -153,7 +140,7 @@ public class TestReceiver {
     class ReceivePacket1 extends Transition {
         @Override
         public State execute(Message input) {
-            return State.WAIT_FOR_CALL_FROM_ABOVE_1;
+            return State.WAIT_FOR_CALL_FROM_ABOVE_0;
         }
     }
 
@@ -163,7 +150,7 @@ public class TestReceiver {
             int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
             System.out.println("execute send ack " + alternatingBit);
             try {
-                sendAck();
+                sendAck(alternatingBit);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -177,7 +164,7 @@ public class TestReceiver {
             int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 0 : 1;
             System.out.println("execute resend ack " + alternatingBit);
             try {
-                sendAck();
+                sendAck(alternatingBit);
             } catch (IOException e) {
                 e.printStackTrace();
             }
