@@ -92,6 +92,7 @@ public class TestReceiver {
             byte[] fileData = ack.getBytes();
             fileData[1015] = (byte) alternatingBit;
 
+
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
             System.out.println("send");
