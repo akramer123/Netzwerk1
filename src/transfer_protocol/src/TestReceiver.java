@@ -2,19 +2,24 @@ package transfer_protocol.src;
 
 import org.thymeleaf.util.StringUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 public class TestReceiver {
     private final CRC32 crc = new CRC32();
     DatagramSocket serverSocket = new DatagramSocket(90);
+    private static final int BUFFER_LENGTH = 1024;
     private int read;
     private State currentState;
     private final Transition[][] transition;
     private String fileName;
+    private static FileOutputStream fileDataWriter;
 
     public TestReceiver() throws SocketException {
 
@@ -47,14 +52,14 @@ public class TestReceiver {
             } else if (testReceiver.getCurrentState() == State.WAIT_FOR_NEW_PACKET_1) {
                 testReceiver.waitForNewPacket();
             }
-
         }
+        fileDataWriter.close();
         System.out.println("END!!");
     }
 
     private void waitForNewPacket() throws IOException {
         System.out.println("Waiting for new packet");
-        byte[] data = new byte[1024];
+        byte[] data = new byte[BUFFER_LENGTH];
         boolean outOfTime = false;
         boolean received = false;
         while (!outOfTime && !received) {
@@ -76,10 +81,22 @@ public class TestReceiver {
 
                 currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
-                if (StringUtils.isEmpty(fileName)) {
-                    fileName = new String(data);
+                int endIndex = 1015;
+                for (int i = 0; i < 1015; i++) {
+                    if (data[i] == 0) {
+                        endIndex = i;
+                        break;
+                    }
                 }
-                System.out.println("received packet " + new String(data));
+                byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
+
+                if (StringUtils.isEmpty(fileName)) {
+                    fileName = new String(fileData);
+                    fileDataWriter = new FileOutputStream(fileName.replace(".txt","2.txt"));
+                } else {
+                    fileDataWriter.write(fileData);
+                }
+                System.out.println("received packet " + new String(fileData));
                 crc.reset();
                 received = true;
 
@@ -98,12 +115,10 @@ public class TestReceiver {
             InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(alternatingBit);
-            outputStream.write(ack.getBytes());
-
-            byte fileData[] = outputStream.toByteArray();
-
+            byte[] fileData = new byte[BUFFER_LENGTH];
+            byte[] startMessage = ack.getBytes();
+            Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
+            fileData[1015] = (byte) alternatingBit;
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);

@@ -77,14 +77,14 @@ public class FileSender {
             if (packetIsNew) {
                 System.out.println("new packet");
                 if (currentState == State.WAIT_FOR_START_CALL) {
-                    fileData = new byte[1024];
+                    fileData = new byte[BUFFER_LENGTH];
                     byte[] startMessage = filename.getBytes();
                     Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
                     System.out.println("started connection");
                 } else {
                     try {
 
-                        fileData = new byte[1024];
+                        fileData = new byte[BUFFER_LENGTH];
                         read = fileInputStream.read(fileData, 0, 1015);
                         System.out.println(new String(fileData));
                         //  System.out.println("read length"+ read);
@@ -144,7 +144,7 @@ public class FileSender {
     public void waitForAck(int alternatingBit) throws IOException {
         System.out.println("Waiting for ACK");
         try (DatagramSocket receiveSocket = new DatagramSocket(100);) {
-            byte[] ackData = new byte[1024];
+            byte[] ackData = new byte[BUFFER_LENGTH];
             boolean outOfTime = false;
             boolean received = false;
             receiveSocket.setSoTimeout(TIMEOUT);
@@ -153,7 +153,7 @@ public class FileSender {
                     DatagramPacket datagramPacket = new DatagramPacket(ackData, BUFFER_LENGTH);
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
-                    int receivedBit = (int) ackData[0];
+                    int receivedBit = (int) ackData[1015];
                     if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0) {
                         received = true;
                         System.out.println("received ack" + answer);
