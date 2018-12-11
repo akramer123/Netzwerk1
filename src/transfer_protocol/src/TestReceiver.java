@@ -97,6 +97,7 @@ public class TestReceiver {
 
             byte fileData[] = outputStream.toByteArray();
 
+
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
             System.out.println("send");
