@@ -1,16 +1,25 @@
 package transfer_protocol.src;
 
-import java.io.IOException;
+import org.thymeleaf.util.StringUtils;
+
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 public class TestReceiver {
     private final CRC32 crc = new CRC32();
     DatagramSocket serverSocket = new DatagramSocket(90);
+    private static final int BUFFER_LENGTH = 1024;
     private int read;
     private State currentState;
     private final Transition[][] transition;
+    private String fileName;
+    private static FileOutputStream fileDataWriter;
 
     public TestReceiver() throws SocketException {
 
@@ -23,6 +32,7 @@ public class TestReceiver {
         transition[State.WAIT_FOR_NEW_PACKET_0.ordinal()][Message.RECEIVED_PACKET_0.ordinal()] = new ReceivePacket0();
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_DUPLICATE.ordinal()] = new ResendAck();
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_PACKET_1.ordinal()] = new ReceivePacket1();
+        transition[State.WAIT_FOR_START_CALL.ordinal()][Message.GOT_START_CALL_FROM_ABOVE.ordinal()] = new ReceivePacket1();
         System.out.println("INFO Receiver constructed, current state: " + currentState);
 
 
@@ -30,7 +40,7 @@ public class TestReceiver {
 
     public static void main(String[] args) throws IOException {
         TestReceiver testReceiver = new TestReceiver();
-        testReceiver.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
+        testReceiver.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
 
         while (testReceiver.getRead() != -1) {
             if (testReceiver.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_0) {
@@ -42,14 +52,14 @@ public class TestReceiver {
             } else if (testReceiver.getCurrentState() == State.WAIT_FOR_NEW_PACKET_1) {
                 testReceiver.waitForNewPacket();
             }
-
         }
+        fileDataWriter.close();
         System.out.println("END!!");
     }
 
     private void waitForNewPacket() throws IOException {
         System.out.println("Waiting for new packet");
-        byte[] data = new byte[1024];
+        byte[] data = new byte[BUFFER_LENGTH];
         boolean outOfTime = false;
         boolean received = false;
         while (!outOfTime && !received) {
@@ -71,7 +81,22 @@ public class TestReceiver {
 
                 currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
-                System.out.println("received packet " + new String(data));
+                int endIndex = 1015;
+                for (int i = 0; i < 1015; i++) {
+                    if (data[i] == 0) {
+                        endIndex = i;
+                        break;
+                    }
+                }
+                byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
+
+                if (StringUtils.isEmpty(fileName)) {
+                    fileName = new String(fileData);
+                    fileDataWriter = new FileOutputStream(fileName.replace(".txt","2.txt"));
+                } else {
+                    fileDataWriter.write(fileData);
+                }
+                System.out.println("received packet " + new String(fileData));
                 crc.reset();
                 received = true;
 
@@ -89,9 +114,11 @@ public class TestReceiver {
         try (DatagramSocket sendSocket = new DatagramSocket()) {
             InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
-            byte[] fileData = ack.getBytes();
-            fileData[1015] = (byte) alternatingBit;
 
+            byte[] fileData = new byte[BUFFER_LENGTH];
+            byte[] startMessage = ack.getBytes();
+            Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
+            fileData[1015] = (byte) alternatingBit;
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
@@ -119,11 +146,11 @@ public class TestReceiver {
     }
 
     enum Message {
-        GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, RECEIVED_PACKET_0, RECEIVED_PACKET_1, RECEIVED_DUPLICATE, TIMEOUT
+        GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, RECEIVED_PACKET_0, RECEIVED_PACKET_1, RECEIVED_DUPLICATE, TIMEOUT, GOT_START_CALL_FROM_ABOVE
     }
 
     enum State {
-        WAIT_FOR_NEW_PACKET_0, WAIT_FOR_NEW_PACKET_1, WAIT_FOR_RESENT_PACKET, WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1
+        WAIT_FOR_NEW_PACKET_0, WAIT_FOR_NEW_PACKET_1, WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_START_CALL
     }
 
 
@@ -148,7 +175,7 @@ public class TestReceiver {
     class SendAck extends Transition {
         @Override
         public State execute(Message input) {
-            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
+            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 1 : 0;
             System.out.println("execute send ack " + alternatingBit);
             try {
                 sendAck(alternatingBit);
@@ -162,7 +189,7 @@ public class TestReceiver {
     class ResendAck extends Transition {
         @Override
         public State execute(Message input) {
-            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 0 : 1;
+            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 1 : 0;
             System.out.println("execute resend ack " + alternatingBit);
             try {
                 sendAck(alternatingBit);
