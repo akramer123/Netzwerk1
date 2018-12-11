@@ -1,5 +1,7 @@
 package transfer_protocol.src;
 
+import org.thymeleaf.util.StringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.*;
@@ -12,6 +14,7 @@ public class TestReceiver {
     private int read;
     private State currentState;
     private final Transition[][] transition;
+    private String fileName;
 
     public TestReceiver() throws SocketException {
 
@@ -24,6 +27,7 @@ public class TestReceiver {
         transition[State.WAIT_FOR_NEW_PACKET_0.ordinal()][Message.RECEIVED_PACKET_0.ordinal()] = new ReceivePacket0();
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_DUPLICATE.ordinal()] = new ResendAck();
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_PACKET_1.ordinal()] = new ReceivePacket1();
+        transition[State.WAIT_FOR_START_CALL.ordinal()][Message.GOT_START_CALL_FROM_ABOVE.ordinal()] = new ReceivePacket1();
         System.out.println("INFO Receiver constructed, current state: " + currentState);
 
 
@@ -31,7 +35,7 @@ public class TestReceiver {
 
     public static void main(String[] args) throws IOException {
         TestReceiver testReceiver = new TestReceiver();
-        testReceiver.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
+        testReceiver.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
 
         while (testReceiver.getRead() != -1) {
             if (testReceiver.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_0) {
@@ -72,6 +76,9 @@ public class TestReceiver {
 
                 currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
+                if (StringUtils.isEmpty(fileName)) {
+                    fileName = new String(data);
+                }
                 System.out.println("received packet " + new String(data));
                 crc.reset();
                 received = true;
@@ -124,11 +131,11 @@ public class TestReceiver {
     }
 
     enum Message {
-        GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, RECEIVED_PACKET_0, RECEIVED_PACKET_1, RECEIVED_DUPLICATE, TIMEOUT
+        GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, RECEIVED_PACKET_0, RECEIVED_PACKET_1, RECEIVED_DUPLICATE, TIMEOUT, GOT_START_CALL_FROM_ABOVE
     }
 
     enum State {
-        WAIT_FOR_NEW_PACKET_0, WAIT_FOR_NEW_PACKET_1, WAIT_FOR_RESENT_PACKET, WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1
+        WAIT_FOR_NEW_PACKET_0, WAIT_FOR_NEW_PACKET_1, WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_START_CALL
     }
 
 
@@ -153,7 +160,7 @@ public class TestReceiver {
     class SendAck extends Transition {
         @Override
         public State execute(Message input) {
-            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
+            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 1 : 0;
             System.out.println("execute send ack " + alternatingBit);
             try {
                 sendAck(alternatingBit);
@@ -167,7 +174,7 @@ public class TestReceiver {
     class ResendAck extends Transition {
         @Override
         public State execute(Message input) {
-            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 0 : 1;
+            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 1 : 0;
             System.out.println("execute resend ack " + alternatingBit);
             try {
                 sendAck(alternatingBit);
