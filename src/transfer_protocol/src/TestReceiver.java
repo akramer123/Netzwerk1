@@ -1,5 +1,6 @@
 package transfer_protocol.src;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -89,8 +90,12 @@ public class TestReceiver {
         try (DatagramSocket sendSocket = new DatagramSocket()) {
             InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
-            byte[] fileData = ack.getBytes();
-            fileData[1015] = (byte) alternatingBit;
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            outputStream.write(alternatingBit);
+            outputStream.write(ack.getBytes());
+
+            byte fileData[] = outputStream.toByteArray();
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);

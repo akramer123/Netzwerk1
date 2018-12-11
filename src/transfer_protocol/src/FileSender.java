@@ -150,7 +150,6 @@ public class FileSender {
                         if (finishedSending) {
                             receivedLastAck = true;
                         }
-
                     }
                 } catch (SocketTimeoutException exception) {
                     outOfTime = true;
