@@ -11,7 +11,6 @@ public class FileSender {
     private static final int BUFFER_LENGTH = 1024;
     private static final int TIMEOUT = 15000;
     private static final double PROBABILITY_PACKET_FAILURE = 0.05;
-    private static final String START_TRANSFER = "START";
     private final String filename;
     private final String adress;
     private final CRC32 crc = new CRC32();
@@ -26,6 +25,8 @@ public class FileSender {
     boolean streamClosed = false;
     boolean finishedSending = false;
     boolean receivedLastAck = false;
+    boolean finWasSent = false;
+    static boolean processFinished= false;
 
 
     public FileSender(String filename, String adress) throws FileNotFoundException, SocketException {
@@ -37,17 +38,15 @@ public class FileSender {
         transition = new Transition[State.values().length][Message.values().length];
         transition[State.WAIT_FOR_CALL_FROM_ABOVE_0.ordinal()][Message.GOT_CALL_FROM_ABOVE_0.ordinal()] = new SendNewPackage();
         transition[State.WAIT_FOR_CALL_FROM_ABOVE_1.ordinal()][Message.GOT_CALL_FROM_ABOVE_1.ordinal()] = new SendNewPackage();
+        transition[State.WAIT_FOR_CALL_FROM_ABOVE_0.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendFinPackage();
+        transition[State.WAIT_FOR_CALL_FROM_ABOVE_1.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendFinPackage();
         transition[State.WAIT_FOR_ACK_0.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
         transition[State.WAIT_FOR_ACK_0.ordinal()][Message.RECEIVED_ACK_0.ordinal()] = new ReceiveAck0();
-        transition[State.WAIT_FOR_ACK_0.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendLastPackage();
+        transition[State.WAIT_FOR_ACK_0.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendFinPackage();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.RECEIVED_ACK_1.ordinal()] = new ReceiveAck1();
         transition[State.WAIT_FOR_ACK_1.ordinal()][Message.TIMEOUT.ordinal()] = new ResendPackage();
-        transition[State.WAIT_FOR_ACK_1.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendLastPackage();
-
-        transition[State.WAIT_FOR_ACK_FIN.ordinal()][Message.RECEIVED_ACK_1.ordinal()] = new SendLastPackage();
-        transition[State.WAIT_FOR_ACK_FIN.ordinal()][Message.TIMEOUT.ordinal()] = new SendLastPackage();
-
+        transition[State.WAIT_FOR_ACK_1.ordinal()][Message.LAST_PACKET_WAS_TRANSMITTED.ordinal()] = new SendFinPackage();
         transition[State.WAIT_FOR_START_CALL.ordinal()][Message.GOT_START_CALL_FROM_ABOVE.ordinal()] = new SendNewPackage();
         transition[State.WAIT_FOR_ACK_START.ordinal()][Message.RECEIVED_ACK_START.ordinal()] = new ReceiveAck1();
 
@@ -58,7 +57,7 @@ public class FileSender {
         FileSender fileSender = new FileSender(args[0], args[1]);
         fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
 
-        while (fileSender.getRead() != -1) {
+        while (!processFinished) {
             if (fileSender.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_0) {
                 fileSender.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
             } else if (fileSender.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_1) {
@@ -67,17 +66,13 @@ public class FileSender {
                 fileSender.waitForAck(0);
             } else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_1) {
                 fileSender.waitForAck(1);
-            }
-            else if(fileSender.currentState == State.WAIT_FOR_ACK_FIN) {
+            } else if(fileSender.currentState == State.WAIT_FOR_ACK_FIN) {
                 fileSender.waitForAck(0);
-            }
-            else if (fileSender.getCurrentState() == State.WAIT_FOR_START_CALL) {
+            } else if (fileSender.getCurrentState() == State.WAIT_FOR_START_CALL) {
                 fileSender.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
             } else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_START) {
                 fileSender.waitForAck(1);
             }
-
-
         }
     }
 
@@ -85,87 +80,89 @@ public class FileSender {
     public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
         InetAddress IPAddress = InetAddress.getByName(adress);
 
-         //if  (!finishedSending) {
+         if(finishedSending || currentState == State.WAIT_FOR_ACK_FIN) {
+             generateFinPacket();
+         }
 
-
-             if(finishedSending || currentState == State.WAIT_FOR_ACK_FIN) {
-                 fileData = new byte[BUFFER_LENGTH];
-                 System.out.println("send fin with bit" + lastTransmittedBit);
-                 fileData[1015] = (byte) (lastTransmittedBit == 0 ? 1 : 0);
-                 currentState = State.WAIT_FOR_ACK_FIN;
-
-             }
-
-            /**send new data, if ack for old data was received**/
-            else if (packetIsNew ) {
-                System.out.println("new packet");
-                if (currentState == State.WAIT_FOR_START_CALL) {
-                    fileData = new byte[BUFFER_LENGTH];
-                    byte[] startMessage = filename.getBytes();
-                    Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
-                    System.out.println("started connection");
-                }
-
-
-                else {
-                    try {
-                        fileData = new byte[BUFFER_LENGTH];
-                        read = fileInputStream.read(fileData, 0, 1015);
-                    }
-                         catch (IOException ioException) {
-                        streamClosed = true;
-                    }
-
-                    crc.update(fileData);
-                }
-                /**add alternating bit to data
-                 * **/
-                fileData[1015] = (byte) alternatingBit;
-                /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data**/
-                byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
-                Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> fileData[1016 + i] = crcBytes[i]);
+        else if (packetIsNew ) {
+            if (currentState == State.WAIT_FOR_START_CALL) {
+                generateStartPacket();
+            }
+            else {
+                generateNewDataPacket();
             }
 
-            /**send original packet or packet with a bit failure**/
-            DatagramPacket datagramPacket;
-            if (!decideToSendPacketFailure()) {
-                datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
-            } else {
-                datagramPacket = new DatagramPacket(generatePacketFailure(fileData), BUFFER_LENGTH, IPAddress, PORT);
-                System.out.println("generated packet failure");
-            }
+        }
+       addHeaderToPacket((byte) alternatingBit);
 
-            if (!streamClosed && !finishedSending) {
-                System.out.println("send packet");
-                sendSocket.send(datagramPacket);
+        DatagramPacket datagramPacket;
+        if (!decideToSendPacketFailure()) {
+            datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
+        } else {
+            datagramPacket = new DatagramPacket(generatePacketFailure(fileData), BUFFER_LENGTH, IPAddress, PORT);
+            System.out.println("generated packet failure");
+        }
 
-            }
+        if (!streamClosed) {
+            sendSocket.send(datagramPacket);
+        }
+        crc.reset();
 
-            crc.reset();
+        if (read < 1015 && currentState != State.WAIT_FOR_START_CALL  && !finishedSending) {
+            finishedSending = true;
+            lastTransmittedBit = alternatingBit;
+        }
 
-            if (read < 1015 && currentState != State.WAIT_FOR_START_CALL  && !finishedSending) {
-                finishedSending = true;
-                System.out.println("Finished Sending");
-                lastTransmittedBit = alternatingBit;
-            }
-            if (finishedSending) {
-                System.out.println("closed input stream");
-                fileInputStream.close();
-                //sendSocket.close();
 
-            }
-            if (currentState != State.WAIT_FOR_ACK_FIN) {
+        if (currentState != State.WAIT_FOR_ACK_FIN  && !finWasSent) {
             currentState = alternatingBit == 0 ? State.WAIT_FOR_ACK_0 : (alternatingBit == 1 ? State.WAIT_FOR_ACK_1 : State.WAIT_FOR_ACK_START);
-                System.out.println("changed state");
-            }
-      //  }
+        }
+        if (finWasSent) {
+            currentState = State.WAIT_FOR_ACK_FIN;
+        }
+
+    }
+
+    private void generateFinPacket() {
+        fileData = new byte[BUFFER_LENGTH];
+        int bit = lastTransmittedBit == 0 ? 1 : 0;
+        System.out.println("send fin with bit" + bit);
+       // fileData[1015] = (byte) (lastTransmittedBit == 0 ? 1 : 0);
+        finWasSent = true;
+        currentState = State.WAIT_FOR_ACK_FIN;
+        crc.update(fileData);
+    }
+    /**put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array fi le data**/
+    private void addHeaderToPacket(byte alternatingBit) {
+        fileData[1015] = alternatingBit;
+
+        byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
+        Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> fileData[1016 + i] = crcBytes[i]);
+    }
+
+    private void generateNewDataPacket() {
+        try {
+            fileData = new byte[BUFFER_LENGTH];
+            read = fileInputStream.read(fileData, 0, 1015);
+        }
+        catch (IOException ioException) {
+            streamClosed = true;
+        }
+
+        crc.update(fileData);
+    }
+
+    private void generateStartPacket() {
+        fileData = new byte[BUFFER_LENGTH];
+        byte[] startMessage = filename.getBytes();
+        Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
     }
 
 
     public void waitForAck(int alternatingBit) throws IOException {
         int n = lastTransmittedBit == 1? 0 :1;
-        System.out.println("Waiting for ACK " + n);
         try (DatagramSocket receiveSocket = new DatagramSocket(100);) {
+
             byte[] ackData = new byte[BUFFER_LENGTH];
             boolean outOfTime = false;
             boolean received = false;
@@ -175,22 +172,26 @@ public class FileSender {
                     DatagramPacket datagramPacket = new DatagramPacket(ackData, BUFFER_LENGTH);
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
-                    System.out.println("lastTransmittedBit" + lastTransmittedBit);
+
                     int receivedBit = (int) ackData[1015];
-                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || lastTransmittedBit == 1 && receivedBit == 0 || lastTransmittedBit == 0 && receivedBit == 1) {
+                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0|| currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
+                        System.out.println("test");
                         received = true;
-                        System.out.println("received ack" + answer);
                         System.out.println("received bit" + receivedBit);
-                        System.out.println(lastTransmittedBit);
-                        currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+                        System.out.println("lastTransmittedBit" + lastTransmittedBit);
+                        if (currentState != State.WAIT_FOR_ACK_FIN) {
+                            currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+                        }
                         if(currentState == State.WAIT_FOR_ACK_FIN) {
                             System.out.println("Received Ack Fin " + receivedBit);
                             sendSocket.close();
-                            System.out.println("close send socket");
+                            processFinished = true;
+                           // System.exit(1);
+                            //System.out.println("close send socket");
                         }
-                        if (finishedSending) {
+                        else if (finishedSending   && currentState != State.WAIT_FOR_ACK_FIN) {
                             receivedLastAck = true;
-                            currentState = State.WAIT_FOR_ACK_FIN;
+                            processMessage(Message.LAST_PACKET_WAS_TRANSMITTED);
                             System.out.println("received last ack");
                         }
                     }
@@ -199,7 +200,6 @@ public class FileSender {
                     System.out.println("timeout");
                     processMessage(Message.TIMEOUT);
                 }
-                System.out.println("current state" + currentState.name());
             }
         }
     }
@@ -217,7 +217,6 @@ public class FileSender {
      * generates a bit failure
      **/
     public byte[] generatePacketFailure(byte[] originalPacket) {
-        //TODO Bitfehler an einer zufaelligen Stelle erzeugen
         final int failureBytePosition = 2;
         final int flipPosition = 5;
         byte[] failurePacket = originalPacket.clone();
@@ -228,40 +227,27 @@ public class FileSender {
     }
 
 
-    public void flipAlternatingBit() {
-        alternatingBit = alternatingBit == 1 ? 0 : 1;
-    }
 
     enum State {
         WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_ACK_0, WAIT_FOR_ACK_1, WAIT_FOR_START_CALL, WAIT_FOR_ACK_START, WAIT_FOR_ACK_FIN
     }
 
-    ;
 
     enum Message {
         GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, TIMEOUT, RECEIVED_ACK_0, RECEIVED_ACK_1, GOT_START_CALL_FROM_ABOVE, RECEIVED_ACK_START,
         LAST_PACKET_WAS_TRANSMITTED
     }
 
-    /**
-     * Process a message (a condition has occurred).
-     *
-     * @param input Message or condition that has occurred.
-     */
+
     public void processMessage(Message input) throws IOException {
         System.out.println("INFO Received " + input + " in state " + currentState);
         Transition trans = transition[currentState.ordinal()][input.ordinal()];
         if (trans != null) {
             currentState = trans.execute(input);
         }
-        System.out.println("INFO State: " + currentState);
     }
 
-    /**
-     * Abstract base class for all transitions.
-     * Derived classes need to override execute thereby defining the action
-     * to be performed whenever this transition occurs.
-     */
+
     abstract class Transition {
         abstract public State execute(Message input) throws IOException;
     }
@@ -278,13 +264,12 @@ public class FileSender {
     }
 
 
-    class SendLastPackage extends Transition {
+    class SendFinPackage extends Transition {
 
         @Override
         public State execute(Message input) throws IOException {
-            System.out.println("send last package");
+            System.out.println("send fin package");
             int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 ? 0 : 1;
-            System.out.println("execute send packet " + alternatingBit);
             sendPacket(true, alternatingBit);
             State returnState = State.WAIT_FOR_ACK_FIN;
             return returnState;
@@ -309,7 +294,6 @@ public class FileSender {
             return State.WAIT_FOR_CALL_FROM_ABOVE_1;
         }
     }
-
 
     class ReceiveAck1 extends Transition {
         @Override

@@ -148,23 +148,7 @@ public class FileSender {
             boolean outOfTime = false;
             boolean received = false;
             receiveSocket.setSoTimeout(TIMEOUT);
-            while (!outOfTime && !received) {
-                try {
-                    DatagramPacket datagramPacket = new DatagramPacket(ackData, BUFFER_LENGTH);
-                    receiveSocket.receive(datagramPacket);
-                    String answer = new String(ackData);
-                    int receivedBit = (int) ackData[1015];
-                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0) {
-                        received = true;
-                        System.out.println("received ack" + answer);
-                        currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
-                        if (finishedSending) {
-                            receivedLastAck = true;
-                        }
-                    }
-                } catch (SocketTimeoutException exception) {
-                    outOfTime = true;
-                    System.out.println("timeout");
+            whiout.println("timeout");
                     processMessage(Message.TIMEOUT);
                 }
             }
@@ -200,33 +184,6 @@ public class FileSender {
     }
 
     enum State {
-        WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_ACK_0, WAIT_FOR_ACK_1, WAIT_FOR_START_CALL, WAIT_FOR_ACK_START
-    }
-
-    ;
-
-    enum Message {
-        GOT_CALL_FROM_ABOVE_0, GOT_CALL_FROM_ABOVE_1, TIMEOUT, RECEIVED_ACK_0, RECEIVED_ACK_1, GOT_START_CALL_FROM_ABOVE, RECEIVED_ACK_START
-    }
-
-    /**
-     * Process a message (a condition has occurred).
-     *
-     * @param input Message or condition that has occurred.
-     */
-    public void processMessage(Message input) throws IOException {
-        System.out.println("INFO Received " + input + " in state " + currentState);
-        Transition trans = transition[currentState.ordinal()][input.ordinal()];
-        if (trans != null) {
-            currentState = trans.execute(input);
-        }
-        System.out.println("INFO State: " + currentState);
-    }
-
-    /**
-     * Abstract base class for all transitions.
-     * Derived classes need to override execute thereby defining the action
-     * to be pe {
         WAIT_FOR_CALL_FROM_ABOVE_0, WAIT_FOR_CALL_FROM_ABOVE_1, WAIT_FOR_ACK_0, WAIT_FOR_ACK_1, WAIT_FOR_START_CALL, WAIT_FOR_ACK_START
     }
 

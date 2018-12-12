@@ -3,44 +3,44 @@
   <component name="ChangeListManager">
     <list default="true" id="f2dc7150-61f0-4882-bbba-b883dfb50968" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/transfer_protocol/FileSenderTest2.txt" afterPath="$PROJECT_DIR$/src/transfer_protocol/FileSenderTest2.txt" />
       <change beforePath="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" afterPath="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Message.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Message.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck0.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck0.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck1.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck1.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ResendPackage.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ResendPackage.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$SendNewPackage.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$SendNewPackage.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$State.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$State.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Transition.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Transition.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver.class" />
     </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CheckStyle-IDEA-workspace">
+    <option name="configuration">
+      <map>
+        <entry key="last-active-plugin-version" value="5.18.5" />
+      </map>
+    </option>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="Netzwerk1" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FileSender.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FileSender.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4569">
-              <caret line="92" column="69" lean-forward="false" selection-start-line="92" selection-start-column="69" selection-end-line="92" selection-end-column="69" />
+            <state relative-caret-position="4025">
+              <caret line="228" column="0" lean-forward="false" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
               <folding>
-                <element signature="e#10032#10033#0" expanded="true" />
-                <element signature="e#10098#10099#0" expanded="true" />
-                <element signature="e#10666#10667#0" expanded="true" />
-                <element signature="e#10726#10727#0" expanded="true" />
-                <element signature="e#13923#13924#0" expanded="true" />
-                <element signature="e#13958#13959#0" expanded="true" />
-                <element signature="e#13986#13987#0" expanded="true" />
-                <element signature="e#14013#14014#0" expanded="true" />
-                <element signature="e#14042#14043#0" expanded="true" />
-                <element signature="e#14068#14069#0" expanded="true" />
+                <element signature="e#9724#9725#0" expanded="true" />
+                <element signature="e#9790#9791#0" expanded="true" />
+                <element signature="e#12983#12984#0" expanded="true" />
+                <element signature="e#13018#13019#0" expanded="true" />
+                <element signature="e#13046#13047#0" expanded="true" />
+                <element signature="e#13073#13074#0" expanded="true" />
+                <element signature="e#13102#13103#0" expanded="true" />
+                <element signature="e#13128#13129#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -49,17 +49,17 @@
       <file leaf-file-name="FileSenderTest.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
+            <state relative-caret-position="5544">
               <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestReceiver.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestReceiver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2541">
+            <state relative-caret-position="-1275">
               <caret line="121" column="0" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -81,6 +81,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -94,6 +99,12 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="139" />
+    <option name="y" value="23" />
+    <option name="width" value="1301" />
+    <option name="height" value="801" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -110,7 +121,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="ProjectPane">
@@ -161,7 +171,13 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -175,7 +191,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.FileSender">
+  <component name="RunManager" selected="Application.TestReceiver">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -313,13 +329,21 @@
     <configuration />
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f2dc7150-61f0-4882-bbba-b883dfb50968" name="Default" comment="" />
+      <created>1544602572968</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1544602572968</updated>
+      <workItem from="1544602586485" duration="6456000" />
+    </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6654000" />
+    <option name="totallyTimeSpent" value="13110000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -338,8 +362,8 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30276242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30276242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32863188" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -398,6 +422,12 @@
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -415,7 +445,7 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -633,34 +663,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
+        <state relative-caret-position="5544">
           <caret line="264" column="0" lean-forward="false" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4569">
-          <caret line="92" column="69" lean-forward="false" selection-start-line="92" selection-start-column="69" selection-end-line="92" selection-end-column="69" />
-          <folding>
-            <element signature="e#10032#10033#0" expanded="true" />
-            <element signature="e#10098#10099#0" expanded="true" />
-            <element signature="e#10666#10667#0" expanded="true" />
-            <element signature="e#10726#10727#0" expanded="true" />
-            <element signature="e#13923#13924#0" expanded="true" />
-            <element signature="e#13958#13959#0" expanded="true" />
-            <element signature="e#13986#13987#0" expanded="true" />
-            <element signature="e#14013#14014#0" expanded="true" />
-            <element signature="e#14042#14043#0" expanded="true" />
-            <element signature="e#14068#14069#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2541">
+        <state relative-caret-position="-1275">
           <caret line="121" column="0" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -672,6 +683,23 @@
             <element signature="e#6766#6767#0" expanded="true" />
             <element signature="e#6883#6884#0" expanded="true" />
             <element signature="e#6946#6947#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4025">
+          <caret line="228" column="0" lean-forward="false" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
+          <folding>
+            <element signature="e#9724#9725#0" expanded="true" />
+            <element signature="e#9790#9791#0" expanded="true" />
+            <element signature="e#12983#12984#0" expanded="true" />
+            <element signature="e#13018#13019#0" expanded="true" />
+            <element signature="e#13046#13047#0" expanded="true" />
+            <element signature="e#13073#13074#0" expanded="true" />
+            <element signature="e#13102#13103#0" expanded="true" />
+            <element signature="e#13128#13129#0" expanded="true" />
           </folding>
         </state>
       </provider>
