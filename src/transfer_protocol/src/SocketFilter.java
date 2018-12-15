@@ -12,6 +12,13 @@ public class SocketFilter extends DatagramSocket {
     private boolean refusePacket;
     private boolean duplicatePacket;
 
+    public SocketFilter(int port) throws SocketException {
+        super(port);
+        this.packetFailure = false;
+        this.refusePacket = false;
+        this.duplicatePacket = false;
+    }
+
     public SocketFilter(int port, boolean packetFailure, boolean refusePacket, boolean duplicatePacket) throws SocketException {
         super(port);
         this.packetFailure = packetFailure;

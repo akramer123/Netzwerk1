@@ -13,7 +13,7 @@ import java.util.zip.CRC32;
 
 public class TestReceiver {
     private final CRC32 crc = new CRC32();
-    DatagramSocket serverSocket = new DatagramSocket(90);
+    private DatagramSocket serverSocket = new DatagramSocket(90);
     private static final int BUFFER_LENGTH = 1024;
     private int read;
     private State currentState;
@@ -89,6 +89,9 @@ public class TestReceiver {
                     }
                 }
                 byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
+                if(fileData.length==0){
+                    //read=-1;
+                }
 
                 if (StringUtils.isEmpty(fileName)) {
                     fileName = new String(fileData);
