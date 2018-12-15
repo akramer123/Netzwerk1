@@ -6,8 +6,6 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
@@ -34,8 +32,6 @@ public class TestReceiver {
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_PACKET_1.ordinal()] = new ReceivePacket1();
         transition[State.WAIT_FOR_START_CALL.ordinal()][Message.GOT_START_CALL_FROM_ABOVE.ordinal()] = new ReceivePacket1();
         System.out.println("INFO Receiver constructed, current state: " + currentState);
-
-
     }
 
     public static void main(String[] args) throws IOException {
@@ -79,7 +75,7 @@ public class TestReceiver {
                 int alternatingBit = data[1015];
                 System.out.println("alternating bit" + alternatingBit);
 
-                currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+                boolean correctState = currentState.name().contains(String.valueOf(alternatingBit));
 
                 int endIndex = 1015;
                 for (int i = 0; i < 1015; i++) {
@@ -89,19 +85,27 @@ public class TestReceiver {
                     }
                 }
                 byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
-                if(fileData.length==0){
-                    //read=-1;
+                if (fileData.length == 0 && correctState) {
+                    read = -1;
+                    System.out.println("Send fin ack");
+                    sendAck(alternatingBit);
                 }
 
-                if (StringUtils.isEmpty(fileName)) {
-                    fileName = new String(fileData);
-                    fileDataWriter = new FileOutputStream(fileName.replace(".txt","2.txt"));
+                if (correctState) {
+                    currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+
+                    if (StringUtils.isEmpty(fileName)) {
+                        fileName = new String(fileData);
+                        fileDataWriter = new FileOutputStream(fileName.replace(".txt", "2.txt"));
+                    } else {
+                        fileDataWriter.write(fileData);
+                    }
+                    System.out.println("received packet " + new String(fileData));
+                    crc.reset();
+                    received = true;
                 } else {
-                    fileDataWriter.write(fileData);
+                    processMessage(Message.RECEIVED_DUPLICATE);
                 }
-                System.out.println("received packet " + new String(fileData));
-                crc.reset();
-                received = true;
 
             } catch (SocketTimeoutException exception) {
                 outOfTime = true;
