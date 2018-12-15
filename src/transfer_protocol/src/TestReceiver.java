@@ -85,13 +85,13 @@ public class TestReceiver {
                     }
                 }
                 byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
-                if (fileData.length == 0 && correctState) {
+                if (fileData.length == 0 && !correctState) {
                     read = -1;
                     System.out.println("Send fin ack");
                     sendAck(alternatingBit);
                 }
 
-                if (correctState) {
+                if (!correctState) {
                     currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
 
                     if (StringUtils.isEmpty(fileName)) {

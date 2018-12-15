@@ -10,7 +10,6 @@ public class FileSender {
     private static final int PORT = 90;
     private static final int BUFFER_LENGTH = 1024;
     private static final int TIMEOUT = 15000;
-    private static final double PROBABILITY_PACKET_FAILURE = 0.05;
     private final String filename;
     private final String adress;
     private final CRC32 crc = new CRC32();
@@ -20,7 +19,6 @@ public class FileSender {
     private byte[] fileData = new byte[1024];
     private State currentState;
     private int read;
-    private int alternatingBit = 0;
     private int lastTransmittedBit;
     boolean streamClosed = false;
     boolean finishedSending = false;
