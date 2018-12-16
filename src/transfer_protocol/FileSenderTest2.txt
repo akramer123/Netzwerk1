@@ -79,6 +79,28 @@ public class FileSender {
                 if (currentState == State.WAIT_FOR_START_CALL) {
                     fileData = new byte[BUFFER_LENGTH];
                     byte[] startMessage = filename.getBytes();
+                    Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[iT_FOR_ACK_1) {
+                fileSender.waitForAck(1);
+            } else if (fileSender.getCurrentState() == State.WAIT_FOR_START_CALL) {
+                fileSender.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
+            } else if (fileSender.getCurrentState() == State.WAIT_FOR_ACK_START) {
+                fileSender.waitForAck(1);
+            }
+
+
+        }
+    }
+
+
+    public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
+        InetAddress IPAddress = InetAddress.getByName(adress);
+        if (!finishedSending) {
+            /**send new data, if ack for old data was received**/
+            if (packetIsNew) {
+                System.out.println("new packet");
+                if (currentState == State.WAIT_FOR_START_CALL) {
+                    fileData = new byte[BUFFER_LENGTH];
+                    byte[] startMessage = filename.getBytes();
                     Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
                     System.out.println("started connection");
                 } else {
@@ -148,7 +170,23 @@ public class FileSender {
             boolean outOfTime = false;
             boolean received = false;
             receiveSocket.setSoTimeout(TIMEOUT);
-            whiout.println("timeout");
+            while (!outOfTime && !received) {
+                try {
+                    DatagramPacket datagramPacket = new DatagramPacket(ackData, BUFFER_LENGTH);
+                    receiveSocket.receive(datagramPacket);
+                    String answer = new String(ackData);
+                    int receivedBit = (int) ackData[1015];
+                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0) {
+                        received = true;
+                        System.out.println("received ack" + answer);
+                        currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
+                        if (finishedSending) {
+                            receivedLastAck = true;
+                        }
+                    }
+                } catch (SocketTimeoutException exception) {
+                    outOfTime = true;
+                    System.out.println("timeout");
                     processMessage(Message.TIMEOUT);
                 }
             }

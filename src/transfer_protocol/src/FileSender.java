@@ -27,6 +27,7 @@ public class FileSender {
     static boolean processFinished = false;
 
 
+   //  C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Netzwerk1\\src\\transfer_protocol\\bild.png localhost
     public FileSender(String filename, String adress) throws FileNotFoundException, SocketException {
         this.filename = filename;
         this.adress = adress;
@@ -93,6 +94,7 @@ public class FileSender {
         DatagramPacket datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
 
         if (!streamClosed) {
+
             sendSocket.send(datagramPacket);
         }
         crc.reset();
@@ -136,6 +138,10 @@ public class FileSender {
         try {
             fileData = new byte[BUFFER_LENGTH];
             read = fileInputStream.read(fileData, 0, 1015);
+            System.out.println("data length: " + read);
+            System.out.println("Data ----------------------------------------------------------------------------------------");
+            System.out.println(new String(fileData));
+            System.out.println("End -----------------------------------------------------------------------------------------");
         } catch (IOException ioException) {
             streamClosed = true;
         }
@@ -177,8 +183,6 @@ public class FileSender {
                             System.out.println("Received Ack Fin " + receivedBit);
                             sendSocket.close();
                             processFinished = true;
-                            // System.exit(1);
-                            //System.out.println("close send socket");
                         } else if (finishedSending && currentState != State.WAIT_FOR_ACK_FIN) {
                             receivedLastAck = true;
                             processMessage(Message.LAST_PACKET_WAS_TRANSMITTED);

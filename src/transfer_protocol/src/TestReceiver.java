@@ -58,7 +58,8 @@ public class TestReceiver {
         byte[] data = new byte[BUFFER_LENGTH];
         boolean outOfTime = false;
         boolean received = false;
-        while (!outOfTime && !received) {
+        /**Hier frage ich jetzt noch auf read = -1 ab, sonst bleibt das Programm in der Schleife haengen.**/
+        while (!outOfTime && !received  && read != -1) {
             try {
                 DatagramPacket receivePacket = new DatagramPacket(data, data.length);
                 serverSocket.receive(receivePacket);
@@ -69,6 +70,8 @@ public class TestReceiver {
                 buffer.rewind();
                 long receivedCrc = buffer.getLong();
 
+                System.out.println("receivePacket" + new String(data));
+
                 System.out.println("received crc" + receivedCrc);
                 boolean isRightChecksum = receivedCrc == crc.getValue();
                 System.out.println("CRC is" + isRightChecksum);
@@ -77,15 +80,25 @@ public class TestReceiver {
 
                 boolean correctState = currentState.name().contains(String.valueOf(alternatingBit));
 
+
                 int endIndex = 1015;
-                for (int i = 0; i < 1015; i++) {
-                    if (data[i] == 0) {
-                        endIndex = i;
-                        break;
+                /**Ich hab da jetzt noch eine if-Abfrage reingepackt, damit er das nur am Anfang beim Filename macht,
+                 * weil es anscheinend in PNG - Dateien vorkommen kann, dass einzelne Bytes innerhalb der Daten 0 sind. Deswegen hat das Programm dann
+                 * immer gedacht, dass nichts mehr ankommt. **/
+                if (StringUtils.isEmpty(fileName)) {
+                    for (int i = 0; i < 1015; i++) {
+                        if (data[i] == 0) {
+                            endIndex = i;
+                            break;
+                        }
                     }
                 }
                 byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
-                if (fileData.length == 0 && !correctState) {
+                /**Da man jetzt nicht mehr den endIndex nutzen kann(siehe oben) zaehl ich einfach durch, on das Array leer ist**/
+                int count = (int) Stream.iterate(0, i -> i +1 ).limit(endIndex).filter(i -> fileData[i] != (int) 0).count();
+                System.out.println("count: " + count + "    correctState: " + correctState );
+                // !correctState
+                if (count == 0) {
                     read = -1;
                     System.out.println("Send fin ack");
                     sendAck(alternatingBit);
@@ -96,14 +109,15 @@ public class TestReceiver {
 
                     if (StringUtils.isEmpty(fileName)) {
                         fileName = new String(fileData);
-                        fileDataWriter = new FileOutputStream(fileName.replace(".txt", "2.txt"));
+                        fileDataWriter = new FileOutputStream(fileName.replace(".png", "2.png"));
                     } else {
                         fileDataWriter.write(fileData);
                     }
                     System.out.println("received packet " + new String(fileData));
                     crc.reset();
                     received = true;
-                } else {
+                }
+                else if (count != 0) {
                     processMessage(Message.RECEIVED_DUPLICATE);
                 }
 
@@ -114,6 +128,8 @@ public class TestReceiver {
                 read = -1;
             }
         }
+
+
     }
 
 
@@ -130,7 +146,6 @@ public class TestReceiver {
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
             System.out.println("send");
-
         }
     }
 
