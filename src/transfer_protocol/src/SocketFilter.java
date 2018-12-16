@@ -12,12 +12,24 @@ public class SocketFilter extends DatagramSocket {
     private boolean refusePacket;
     private boolean duplicatePacket;
 
+
+
+    /**Ich hab hier noch einen Konstruktor ohne Port hinzugefuegt, weil ich beim Sender den Port immer erst beim Senden ans
+     * DatagramPacket uebergebe, sonst bekomme ich eine Exception mit already bind**/
+    public SocketFilter() throws SocketException {
+        super();
+        this.packetFailure = false;
+        this.refusePacket = false;
+        this.duplicatePacket = false;
+    }
+
     public SocketFilter(int port) throws SocketException {
         super(port);
         this.packetFailure = false;
         this.refusePacket = false;
         this.duplicatePacket = false;
     }
+
 
     public SocketFilter(int port, boolean packetFailure, boolean refusePacket, boolean duplicatePacket) throws SocketException {
         super(port);

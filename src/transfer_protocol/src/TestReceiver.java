@@ -97,7 +97,6 @@ public class TestReceiver {
                 /**Da man jetzt nicht mehr den endIndex nutzen kann(siehe oben) zaehl ich einfach durch, on das Array leer ist**/
                 int count = (int) Stream.iterate(0, i -> i +1 ).limit(endIndex).filter(i -> fileData[i] != (int) 0).count();
                 System.out.println("count: " + count + "    correctState: " + correctState );
-                // !correctState
                 if (count == 0) {
                     read = -1;
                     System.out.println("Send fin ack");

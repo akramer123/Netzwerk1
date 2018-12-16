@@ -13,7 +13,7 @@ public class FileSender {
     private static final double PROBABILITY_PACKET_FAILURE = 0.05;
     private static final String START_TRANSFER = "START";
     private final String filename;
-    private final String adress;
+    private final String address;
     private final CRC32 crc = new CRC32();
     private final Transition[][] transition;
     private final FileInputStream fileInputStream;
@@ -27,9 +27,9 @@ public class FileSender {
     boolean receivedLastAck;
 
 
-    public FileSender(String filename, String adress) throws FileNotFoundException, SocketException {
+    public FileSender(String filename, String address) throws FileNotFoundException, SocketException {
         this.filename = filename;
-        this.adress = adress;
+        this.address = address;
 
         currentState = State.WAIT_FOR_START_CALL;
 
@@ -71,7 +71,7 @@ public class FileSender {
 
 
     public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
-        InetAddress IPAddress = InetAddress.getByName(adress);
+        InetAddress IPAddress = InetAddress.getByName(address);
         if (!finishedSending) {
             /**send new data, if ack for old data was received**/
             if (packetIsNew) {
@@ -93,7 +93,7 @@ public class FileSender {
 
 
     public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
-        InetAddress IPAddress = InetAddress.getByName(adress);
+        InetAddress IPAddress = InetAddress.getByName(address);
         if (!finishedSending) {
             /**send new data, if ack for old data was received**/
             if (packetIsNew) {

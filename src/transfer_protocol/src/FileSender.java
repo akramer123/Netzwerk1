@@ -11,11 +11,12 @@ public class FileSender {
     private static final int BUFFER_LENGTH = 1024;
     private static final int TIMEOUT = 15000;
     private final String filename;
-    private final String adress;
+    private final String address;
     private final CRC32 crc = new CRC32();
     private final Transition[][] transition;
     private final FileInputStream fileInputStream;
-    private final DatagramSocket sendSocket = new DatagramSocket();
+   // private final DatagramSocket sendSocket = new DatagramSocket();
+    private final SocketFilter sendSocket = new SocketFilter();
     private byte[] fileData = new byte[1024];
     private State currentState;
     private int read;
@@ -28,12 +29,11 @@ public class FileSender {
 
 
    //  C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Netzwerk1\\src\\transfer_protocol\\bild.png localhost
-    public FileSender(String filename, String adress) throws FileNotFoundException, SocketException {
+    public FileSender(String filename, String address) throws FileNotFoundException, SocketException {
         this.filename = filename;
-        this.adress = adress;
+        this.address = address;
 
         currentState = State.WAIT_FOR_START_CALL;
-
         transition = new Transition[State.values().length][Message.values().length];
         transition[State.WAIT_FOR_CALL_FROM_ABOVE_0.ordinal()][Message.GOT_CALL_FROM_ABOVE_0.ordinal()] = new SendNewPackage();
         transition[State.WAIT_FOR_CALL_FROM_ABOVE_1.ordinal()][Message.GOT_CALL_FROM_ABOVE_1.ordinal()] = new SendNewPackage();
@@ -77,24 +77,22 @@ public class FileSender {
 
 
     public void sendPacket(boolean packetIsNew, int alternatingBit) throws IOException {
-        InetAddress IPAddress = InetAddress.getByName(adress);
+        InetAddress IPAddress = InetAddress.getByName(address);
 
         if (finishedSending || currentState == State.WAIT_FOR_ACK_FIN) {
             generateFinPacket();
-        } else if (packetIsNew) {
+        }
+        else if (packetIsNew) {
             if (currentState == State.WAIT_FOR_START_CALL) {
                 generateStartPacket();
             } else {
                 generateNewDataPacket();
             }
-
         }
         addHeaderToPacket((byte) alternatingBit);
-
         DatagramPacket datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
 
         if (!streamClosed) {
-
             sendSocket.send(datagramPacket);
         }
         crc.reset();
@@ -103,33 +101,28 @@ public class FileSender {
             finishedSending = true;
             lastTransmittedBit = alternatingBit;
         }
-
-
         if (currentState != State.WAIT_FOR_ACK_FIN && !finWasSent) {
             currentState = alternatingBit == 0 ? State.WAIT_FOR_ACK_0 : (alternatingBit == 1 ? State.WAIT_FOR_ACK_1 : State.WAIT_FOR_ACK_START);
         }
         if (finWasSent) {
             currentState = State.WAIT_FOR_ACK_FIN;
         }
-
     }
 
     private void generateFinPacket() {
         fileData = new byte[BUFFER_LENGTH];
         int bit = lastTransmittedBit == 0 ? 1 : 0;
         System.out.println("send fin with bit" + bit);
-        // fileData[1015] = (byte) (lastTransmittedBit == 0 ? 1 : 0);
         finWasSent = true;
         currentState = State.WAIT_FOR_ACK_FIN;
         crc.update(fileData);
     }
 
     /**
-     * put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array fi le data
+     * put crc long in an byte array with length 8 and send the checksum with data as the last 8 bytes (1016 - 1032) in the array file data
      **/
     private void addHeaderToPacket(byte alternatingBit) {
         fileData[1015] = alternatingBit;
-
         byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
         Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> fileData[1016 + i] = crcBytes[i]);
     }
@@ -138,14 +131,10 @@ public class FileSender {
         try {
             fileData = new byte[BUFFER_LENGTH];
             read = fileInputStream.read(fileData, 0, 1015);
-            System.out.println("data length: " + read);
-            System.out.println("Data ----------------------------------------------------------------------------------------");
             System.out.println(new String(fileData));
-            System.out.println("End -----------------------------------------------------------------------------------------");
         } catch (IOException ioException) {
             streamClosed = true;
         }
-
         crc.update(fileData);
     }
 
@@ -157,9 +146,7 @@ public class FileSender {
 
 
     public void waitForAck(int alternatingBit) throws IOException {
-        int n = lastTransmittedBit == 1 ? 0 : 1;
-        try (DatagramSocket receiveSocket = new DatagramSocket(100);) {
-
+        try (DatagramSocket receiveSocket = new DatagramSocket(100)) {
             byte[] ackData = new byte[BUFFER_LENGTH];
             boolean outOfTime = false;
             boolean received = false;
@@ -169,33 +156,44 @@ public class FileSender {
                     DatagramPacket datagramPacket = new DatagramPacket(ackData, BUFFER_LENGTH);
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
-
                     int receivedBit = (int) ackData[1015];
                     if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
-                        System.out.println("test");
                         received = true;
-                        System.out.println("received bit" + receivedBit);
-                        System.out.println("lastTransmittedBit" + lastTransmittedBit);
                         if (currentState != State.WAIT_FOR_ACK_FIN) {
                             currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
                         }
                         if (currentState == State.WAIT_FOR_ACK_FIN) {
-                            System.out.println("Received Ack Fin " + receivedBit);
-                            sendSocket.close();
-                            processFinished = true;
-                        } else if (finishedSending && currentState != State.WAIT_FOR_ACK_FIN) {
-                            receivedLastAck = true;
-                            processMessage(Message.LAST_PACKET_WAS_TRANSMITTED);
-                            System.out.println("received last ack");
+                            handleAckFin(receivedBit);
+                        }
+                        else if (finishedSending && currentState != State.WAIT_FOR_ACK_FIN) {
+                            handleLastDataAck();
                         }
                     }
                 } catch (SocketTimeoutException exception) {
-                    outOfTime = true;
-                    System.out.println("timeout");
-                    processMessage(Message.TIMEOUT);
+                    outOfTime = handleTimeout();
                 }
             }
         }
+    }
+
+    private boolean handleTimeout() throws IOException {
+        boolean outOfTime;
+        outOfTime = true;
+        System.out.println("TIMEOUT");
+        processMessage(Message.TIMEOUT);
+        return outOfTime;
+    }
+
+    private void handleLastDataAck() throws IOException {
+        receivedLastAck = true;
+        processMessage(Message.LAST_PACKET_WAS_TRANSMITTED);
+        System.out.println("Received last ack");
+    }
+
+    private void handleAckFin(int receivedBit) {
+        System.out.println("Received Ack Fin " + receivedBit);
+        sendSocket.close();
+        processFinished = true;
     }
 
 
@@ -217,7 +215,6 @@ public class FileSender {
             currentState = trans.execute(input);
         }
     }
-
 
     abstract class Transition {
         abstract public State execute(Message input) throws IOException;
