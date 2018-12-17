@@ -8,14 +8,13 @@ import java.net.SocketException;
 public class SocketFilter extends DatagramSocket {
 
     private static final double PROBABILITY_PACKET_FAILURE = 0.05;
+    private static final double PROBABILITY_PACKET_REJECT = 0.1;
+    private static final double PROBABILITY_PACKET_DUPLICATE = 0.05;
     private boolean packetFailure;
     private boolean refusePacket;
     private boolean duplicatePacket;
 
 
-
-    /**Ich hab hier noch einen Konstruktor ohne Port hinzugefuegt, weil ich beim Sender den Port immer erst beim Senden ans
-     * DatagramPacket uebergebe, sonst bekomme ich eine Exception mit already bind**/
     public SocketFilter() throws SocketException {
         super();
         this.packetFailure = false;
@@ -31,26 +30,21 @@ public class SocketFilter extends DatagramSocket {
     }
 
 
-    public SocketFilter(int port, boolean packetFailure, boolean refusePacket, boolean duplicatePacket) throws SocketException {
-        super(port);
-        this.packetFailure = packetFailure;
-        this.refusePacket = refusePacket;
-        this.duplicatePacket = duplicatePacket;
-    }
-
     @Override
     public void send(DatagramPacket p) throws IOException {
         int sendNumber = 1;
         DatagramPacket datagramPacket = p;
-        if (packetFailure && !decideToSendPacketFailure()) {
+        if (packetFailure && decideToSendPacketFailure(PROBABILITY_PACKET_FAILURE)) {
             datagramPacket = new DatagramPacket(generatePacketFailure(p.getData()), p.getLength(), p.getAddress(), p.getPort());
             System.out.println("generated packet failure");
         }
-        //TODO: wahrscheinlichkeit einbauen
-        if (refusePacket) {
+
+        if (refusePacket && decideToSendPacketFailure(PROBABILITY_PACKET_REJECT)) {
+            System.out.println("packet rejected");
             sendNumber = 0;
         }
-        if (duplicatePacket) {
+        if (duplicatePacket && decideToSendPacketFailure(PROBABILITY_PACKET_DUPLICATE)) {
+            System.out.println("packet duplicated");
             sendNumber = 2;
         }
         for (int i = 0; i < sendNumber; i++) {
@@ -61,8 +55,8 @@ public class SocketFilter extends DatagramSocket {
     /**
      * decides if a bit failure should be generated using a given probability
      **/
-    public boolean decideToSendPacketFailure() {
-        return Math.random() <= PROBABILITY_PACKET_FAILURE;
+    public boolean decideToSendPacketFailure(double probability) {
+        return Math.random() > probability;
     }
 
     /**
@@ -75,7 +69,7 @@ public class SocketFilter extends DatagramSocket {
         byte[] failurePacket = originalPacket.clone();
         byte failureByte = originalPacket[failureBytePosition];
         failureByte = (byte) (failureByte ^ (1 << flipPosition));
-        failurePacket[failureByte] = failureByte;
+        failurePacket[Math.abs(failureByte)] = failureByte;
         return failurePacket;
     }
 
