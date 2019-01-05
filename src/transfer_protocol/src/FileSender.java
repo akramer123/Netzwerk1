@@ -15,7 +15,7 @@ public class FileSender {
     private final CRC32 crc = new CRC32();
     private final Transition[][] transition;
     private final FileInputStream fileInputStream;
-   // private final DatagramSocket sendSocket = new DatagramSocket();
+    // private final DatagramSocket sendSocket = new DatagramSocket();
     private final SocketFilter sendSocket = new SocketFilter();
     private byte[] fileData = new byte[1024];
     private State currentState;
@@ -28,7 +28,7 @@ public class FileSender {
     static boolean processFinished = false;
 
 
-   //  C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Netzwerk1\\src\\transfer_protocol\\bild.png localhost
+    //  C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Netzwerk1\\src\\transfer_protocol\\bild.png localhost
     public FileSender(String filename, String address) throws FileNotFoundException, SocketException {
         this.filename = filename;
         this.address = address;
@@ -81,8 +81,7 @@ public class FileSender {
 
         if (finishedSending || currentState == State.WAIT_FOR_ACK_FIN) {
             generateFinPacket();
-        }
-        else if (packetIsNew) {
+        } else if (packetIsNew) {
             if (currentState == State.WAIT_FOR_START_CALL) {
                 generateStartPacket();
             } else {
@@ -115,7 +114,7 @@ public class FileSender {
         System.out.println("send fin with bit" + bit);
         finWasSent = true;
         currentState = State.WAIT_FOR_ACK_FIN;
-        crc.update(fileData);
+        crc.update(fileData, 0, 1015);
     }
 
     /**
@@ -135,13 +134,14 @@ public class FileSender {
         } catch (IOException ioException) {
             streamClosed = true;
         }
-        crc.update(fileData);
+        crc.update(fileData, 0, 1015);
     }
 
     private void generateStartPacket() {
         fileData = new byte[BUFFER_LENGTH];
         byte[] startMessage = filename.getBytes();
         Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
+        crc.update(fileData, 0, 1015);
     }
 
 
@@ -164,8 +164,7 @@ public class FileSender {
                         }
                         if (currentState == State.WAIT_FOR_ACK_FIN) {
                             handleAckFin(receivedBit);
-                        }
-                        else if (finishedSending && currentState != State.WAIT_FOR_ACK_FIN) {
+                        } else if (finishedSending && currentState != State.WAIT_FOR_ACK_FIN) {
                             handleLastDataAck();
                         }
                     }

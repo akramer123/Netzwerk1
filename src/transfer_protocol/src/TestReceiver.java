@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
@@ -54,7 +56,7 @@ public class TestReceiver {
     }
 
     private void waitForNewPacket() throws IOException {
-        System.out.println("Waiting for new packet");
+        //System.out.println("Waiting for new packet");
         byte[] data = new byte[BUFFER_LENGTH];
         boolean outOfTime = false;
         boolean received = false;
@@ -62,45 +64,31 @@ public class TestReceiver {
             try {
                 DatagramPacket receivePacket = new DatagramPacket(data, data.length);
                 serverSocket.receive(receivePacket);
-                crc.update(data, 0, 1016);
-                byte[] crcBytes = ByteBuffer.allocate(Long.SIZE / Byte.SIZE).putLong(crc.getValue()).array();
-                ByteBuffer buffer = ByteBuffer.wrap(crcBytes, 0, Long.SIZE / Byte.SIZE);
-                buffer.put(data, 1016, 8);
-                buffer.rewind();
-                long receivedCrc = buffer.getLong();
-
-                System.out.println("receivePacket" + new String(data));
-
-                System.out.println("received crc" + receivedCrc);
-                boolean isRightChecksum = receivedCrc == crc.getValue();
-                System.out.println("CRC is" + isRightChecksum);
                 int alternatingBit = data[1015];
-                System.out.println("alternating bit" + alternatingBit);
+                Map<String, Boolean> header = readHeader(data, alternatingBit);
+                Boolean correctState = header.get("correctState");
+                Boolean correctChecksum = header.get("crc");
 
-                boolean correctState = currentState.name().contains(String.valueOf(alternatingBit));
-
-
-                int endIndex = 1015;
-                if (StringUtils.isEmpty(fileName)) {
-                    for (int i = 0; i < 1015; i++) {
-                        if (data[i] == 0) {
-                            endIndex = i;
-                            break;
-                        }
-                    }
-                }
-                byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
                 int count = (int) Stream.iterate(0, i -> i + 1).limit(1014).filter(i -> data[i] != 0).count();
-                System.out.println("count: " + count + "    correctState: " + correctState);
+                //System.out.println("count: " + count + "    correctState: " + correctState);
                 if (count == 0) {
                     read = -1;
                     System.out.println("Send fin ack");
                     sendAck(alternatingBit);
                 }
 
-                if (!correctState) {
+                if (correctState & correctChecksum) {
                     currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
-
+                    int endIndex = 1015;
+                    if (StringUtils.isEmpty(fileName)) {
+                        for (int i = 0; i < 1015; i++) {
+                            if (data[i] == 0) {
+                                endIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    byte[] fileData = Arrays.copyOfRange(data, 0, endIndex);
                     if (StringUtils.isEmpty(fileName)) {
                         fileName = new String(fileData);
                         String[] splitFileName = fileName.split("\\.");
@@ -108,8 +96,8 @@ public class TestReceiver {
                     } else {
                         fileDataWriter.write(fileData);
                     }
-                    System.out.println("received packet " + new String(fileData));
-                    crc.reset();
+                    //System.out.println("received packet " + new String(fileData));
+
                     received = true;
                 } else if (count != 0) {
                     processMessage(Message.RECEIVED_DUPLICATE);
@@ -122,8 +110,33 @@ public class TestReceiver {
                 read = -1;
             }
         }
+    }
 
 
+    private Map<String, Boolean> readHeader(byte[] data, int alternatingBit) {
+        Map<String, Boolean> header = new HashMap<>();
+        crc.reset();
+        crc.update(data, 0, 1015);
+        byte[] crcBytes = new byte[8];
+        Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> crcBytes[i] = data[1016 + i]);
+
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.put(crcBytes);
+        buffer.flip();
+
+        long receivedCrc = buffer.getLong();
+
+        System.out.println("received crc: " + receivedCrc + " === crc:" + crc.getValue());
+        boolean isRightChecksum = receivedCrc == crc.getValue();
+        System.out.println("CRC is " + isRightChecksum);
+
+        System.out.println("alternating bit" + alternatingBit);
+        boolean correctState = !currentState.name().contains(String.valueOf(alternatingBit));
+        header.put("correctState", correctState);
+        header.put("crc", isRightChecksum);
+
+
+        return header;
     }
 
 
@@ -139,18 +152,18 @@ public class TestReceiver {
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
-            System.out.println("send");
+            //System.out.println("send");
         }
     }
 
 
     public void processMessage(Message input) {
-        System.out.println("INFO Received " + input + " in state " + currentState);
+        //System.out.println("INFO Received " + input + " in state " + currentState);
         Transition trans = transition[currentState.ordinal()][input.ordinal()];
         if (trans != null) {
             currentState = trans.execute(input);
         }
-        System.out.println("INFO State: " + currentState);
+        //System.out.println("INFO State: " + currentState);
     }
 
     public State getCurrentState() {
@@ -205,14 +218,14 @@ public class TestReceiver {
     class ResendAck extends Transition {
         @Override
         public State execute(Message input) {
-            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 1 : 0;
+            int alternatingBit = currentState == State.WAIT_FOR_NEW_PACKET_0 ? 0 : 1;
             System.out.println("execute resend ack " + alternatingBit);
             try {
                 sendAck(alternatingBit);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return alternatingBit == 0 ? State.WAIT_FOR_NEW_PACKET_0 : State.WAIT_FOR_NEW_PACKET_1;
+            return alternatingBit == 0 ? State.WAIT_FOR_NEW_PACKET_1 : State.WAIT_FOR_NEW_PACKET_0;
         }
     }
 
