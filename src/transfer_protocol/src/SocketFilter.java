@@ -55,9 +55,10 @@ public class SocketFilter extends DatagramSocket {
      * decides if a bit failure should be generated using a given probability
      **/
     public boolean decideToSendPacketFailure(double probability) {
-        double random = Math.random();
-        System.out.println("random: " + random);
-        return  random < probability;
+
+
+        return Math.random() < probability;
+
     }
 
     /**
