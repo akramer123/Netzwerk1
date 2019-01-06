@@ -5,21 +5,20 @@ import java.io.InputStream;
 import java.net.*;
 
 public class Server extends Thread {
-        private  static final int PACKET_LENGTH = 1_400;
-        private  static final int PORT = 90;
+        private  static final int PACKET_LENGTH = Constants.PACKET_LENGTH;
+        private  static final int PORT = Constants.PORT;
         private  static final int TIMEOUT = 10_000;
-        private int dataLength = 0;
-        boolean outOfTime = false;
-        private   BitRateTest bitRateTest;
-        private   String protocol;
+        private  int dataLength = 0;
+        boolean  outOfTime = false;
+        private  BitRateTest bitRateTest;
+        private  String protocol;
         private  static double[] receiveDataRate = new double[Constants.TEST_REPEATS];
-        private static int i = 0;
-        private int packetCounter = 0;
+        private  static int i = 0;
+        private  int packetCounter = 0;
 
         public static void main(String[] args) throws IOException {
             Server server = new Server(args[0]);
             long received = server.receivePackets(server.getProtocol());
-          //  server.putReceiveDataRate(received);;
         }
 
         public Server(String protocol) {
@@ -92,10 +91,7 @@ public class Server extends Thread {
         public long calculateDataRate(long start, long stop) {
             double timeInSeconds = protocol.equals(Constants.TCP) ? (stop - start) : stop -start - TIMEOUT;
             timeInSeconds = timeInSeconds / Constants.FACTOR_KILO;
-            System.out.println("time in seconds" + timeInSeconds);
             long dataLengthInKBit = (long) ((double) (packetCounter / Constants.FACTOR_KILO)) * PACKET_LENGTH * Constants.FACTOR_BYTES_TO_BITS;
-            System.out.println("packet counter" + packetCounter);
-            System.out.println("server data length in kbit" + dataLengthInKBit);
             long dataRate = outOfTime && packetCounter == 0 || timeInSeconds == 0? 0 : dataLengthInKBit / (long)timeInSeconds;
             receiveDataRate[i] = dataRate;
             i++;
@@ -105,16 +101,12 @@ public class Server extends Thread {
 
 
 
-
-
-
     public static void printReceiveDataRate() {
         System.out.println("Receive Data Rate");
         for (int j = 0; j < Constants.TEST_REPEATS; j++) {
             System.out.print(receiveDataRate[j] + " ");
             System.out.println();
         }
-
     }
 
 
@@ -132,6 +124,11 @@ public class Server extends Thread {
         i = 0;
     }
 
+    public  void putReceiveDataRate(double dataRate) {
+        receiveDataRate[i] = dataRate;
+        i++;
+    }
+
 
     public void run(){
         try {
@@ -139,7 +136,7 @@ public class Server extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
+
 }

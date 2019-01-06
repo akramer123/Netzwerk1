@@ -1,11 +1,6 @@
 
 package com.taxitool.model.routing;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -33,7 +28,7 @@ public class End {
     @JsonProperty("type")
     private String type;
     @JsonProperty("spot")
-    private Double spot;
+    private Integer spot;
     @JsonProperty("sideOfStreet")
     private String sideOfStreet;
     @JsonProperty("mappedRoadName")
@@ -42,8 +37,6 @@ public class End {
     private String label;
     @JsonProperty("shapeIndex")
     private Integer shapeIndex;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("linkId")
     public String getLinkId() {
@@ -86,12 +79,12 @@ public class End {
     }
 
     @JsonProperty("spot")
-    public Double getSpot() {
+    public Integer getSpot() {
         return spot;
     }
 
     @JsonProperty("spot")
-    public void setSpot(Double spot) {
+    public void setSpot(Integer spot) {
         this.spot = spot;
     }
 
@@ -133,16 +126,6 @@ public class End {
     @JsonProperty("shapeIndex")
     public void setShapeIndex(Integer shapeIndex) {
         this.shapeIndex = shapeIndex;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

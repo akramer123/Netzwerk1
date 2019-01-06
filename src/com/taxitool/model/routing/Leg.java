@@ -1,15 +1,11 @@
 
 package com.taxitool.model.routing;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -17,7 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "end",
     "length",
     "travelTime",
-    "maneuver"
+    "maneuver",
+    "link",
+    "boundingBox",
+    "shape",
+    "firstPoint",
+    "lastPoint",
+    "trafficTime",
+    "baseTime",
+    "summary"
 })
 public class Leg {
 
@@ -31,8 +35,22 @@ public class Leg {
     private Integer travelTime;
     @JsonProperty("maneuver")
     private List<Maneuver> maneuver = null;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonProperty("link")
+    private List<Link> link = null;
+    @JsonProperty("boundingBox")
+    private BoundingBox__ boundingBox;
+    @JsonProperty("shape")
+    private List<String> shape = null;
+    @JsonProperty("firstPoint")
+    private Integer firstPoint;
+    @JsonProperty("lastPoint")
+    private Integer lastPoint;
+    @JsonProperty("trafficTime")
+    private Integer trafficTime;
+    @JsonProperty("baseTime")
+    private Integer baseTime;
+    @JsonProperty("summary")
+    private Summary summary;
 
     @JsonProperty("start")
     public Start getStart() {
@@ -84,14 +102,84 @@ public class Leg {
         this.maneuver = maneuver;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    @JsonProperty("link")
+    public List<Link> getLink() {
+        return link;
     }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    @JsonProperty("link")
+    public void setLink(List<Link> link) {
+        this.link = link;
+    }
+
+    @JsonProperty("boundingBox")
+    public BoundingBox__ getBoundingBox() {
+        return boundingBox;
+    }
+
+    @JsonProperty("boundingBox")
+    public void setBoundingBox(BoundingBox__ boundingBox) {
+        this.boundingBox = boundingBox;
+    }
+
+    @JsonProperty("shape")
+    public List<String> getShape() {
+        return shape;
+    }
+
+    @JsonProperty("shape")
+    public void setShape(List<String> shape) {
+        this.shape = shape;
+    }
+
+    @JsonProperty("firstPoint")
+    public Integer getFirstPoint() {
+        return firstPoint;
+    }
+
+    @JsonProperty("firstPoint")
+    public void setFirstPoint(Integer firstPoint) {
+        this.firstPoint = firstPoint;
+    }
+
+    @JsonProperty("lastPoint")
+    public Integer getLastPoint() {
+        return lastPoint;
+    }
+
+    @JsonProperty("lastPoint")
+    public void setLastPoint(Integer lastPoint) {
+        this.lastPoint = lastPoint;
+    }
+
+    @JsonProperty("trafficTime")
+    public Integer getTrafficTime() {
+        return trafficTime;
+    }
+
+    @JsonProperty("trafficTime")
+    public void setTrafficTime(Integer trafficTime) {
+        this.trafficTime = trafficTime;
+    }
+
+    @JsonProperty("baseTime")
+    public Integer getBaseTime() {
+        return baseTime;
+    }
+
+    @JsonProperty("baseTime")
+    public void setBaseTime(Integer baseTime) {
+        this.baseTime = baseTime;
+    }
+
+    @JsonProperty("summary")
+    public Summary getSummary() {
+        return summary;
+    }
+
+    @JsonProperty("summary")
+    public void setSummary(Summary summary) {
+        this.summary = summary;
     }
 
 }

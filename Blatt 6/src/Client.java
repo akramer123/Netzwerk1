@@ -2,11 +2,11 @@ import java.io.*;
 import java.net.*;
 
 public class Client extends Thread {
-        private static final int RUNNING_TIME = 20_000;
+        private static final int RUNNING_TIME = 25_000;
         private static int DELAY;
         private static int N;
-        private static final int PACKET_LENGTH = 1_400;
-        private static final int PORT = 90;
+        private static final int PACKET_LENGTH = Constants.PACKET_LENGTH;
+        private static final int PORT = Constants.PORT;
         private static  String ADRESS;
         private  boolean isUDP;
         private int dataLength;
@@ -41,7 +41,6 @@ public class Client extends Thread {
         client.calculateExpectedSendRate();
         double sent = client.sendPacket(args[1]);
         client.putSendDataRate(sent);
-
     }
 
 
@@ -76,6 +75,7 @@ public class Client extends Thread {
         return realStop;
         }
 
+
         private long sendPacketsTCP (long start, long expectedStop) throws IOException, InterruptedException {
             try( Socket clientSocket = new Socket(ADRESS, 90);
                 OutputStream outputStream = clientSocket.getOutputStream()) { ;
@@ -98,18 +98,17 @@ public class Client extends Thread {
 
 
 
-        private double calculateRealSendRate(long start, long stop) {
-            double timeInSeconds = (stop - start) / Constants.FACTOR_KILO;
-            long dataLengthInKBit = (packetCounter * PACKET_LENGTH);
-                    dataLengthInKBit = (dataLengthInKBit* Constants.FACTOR_BYTES_TO_BITS) / Constants.FACTOR_KILO;
-            double realSendRate = dataLengthInKBit / timeInSeconds;
-            sendDataRate[i] = realSendRate;
-            i++;
-            System.out.println("Real Send Rate  is: " + realSendRate);
-            return realSendRate ;
+    private double calculateRealSendRate(long start, long stop) {
+        double timeInSeconds = (stop - start) / Constants.FACTOR_KILO;
+        long dataLengthInKBit = (packetCounter * PACKET_LENGTH);
+        dataLengthInKBit = (dataLengthInKBit* Constants.FACTOR_BYTES_TO_BITS) / Constants.FACTOR_KILO;
+        double realSendRate = dataLengthInKBit / timeInSeconds;
+        sendDataRate[i] = realSendRate;
+        i++;
+        System.out.println("Real Send Rate  is: " + realSendRate);
+        return realSendRate ;
 
-        }
-
+    }
 
 
     public static double calculateExpectedSendRate() {
@@ -122,15 +121,10 @@ public class Client extends Thread {
     }
 
 
-
-
-
-
     public  void putSendDataRate(double dataRate) {
         sendDataRate[i] = dataRate;
         i++;
     }
-
 
 
     public static void printSendDataRate() {
@@ -139,13 +133,15 @@ public class Client extends Thread {
             System.out.print(sendDataRate[i] + " ");
         }
         System.out.println();
-
     }
 
     public static double[] getSendDataRate() {
         return sendDataRate;
     }
 
+    public static void resetIndex() {
+        i = 0;
+    }
 
 
     public void run() {
@@ -159,14 +155,6 @@ public class Client extends Thread {
 
 
     }
-
-
-
-    public static void resetIndex() {
-       i = 0;
-    }
-
-
 }
 
 
