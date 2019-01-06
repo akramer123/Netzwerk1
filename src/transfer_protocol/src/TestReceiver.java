@@ -128,7 +128,7 @@ public class TestReceiver {
 
 
     public void sendAck(final int alternatingBit) throws IOException {
-        try (DatagramSocket sendSocket = new DatagramSocket()) {
+        try (SocketFilter sendSocket = new SocketFilter()) {
             InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
 

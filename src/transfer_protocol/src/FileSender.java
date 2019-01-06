@@ -89,15 +89,17 @@ public class FileSender {
                 generateNewDataPacket();
             }
         }
+        System.out.println(new String(fileData));
         addHeaderToPacket((byte) alternatingBit);
         DatagramPacket datagramPacket = new DatagramPacket(fileData, BUFFER_LENGTH, IPAddress, PORT);
 
         if (!streamClosed) {
             sendSocket.send(datagramPacket);
+            System.out.println("crc" + crc.getValue());
         }
         crc.reset();
 
-        if (read < 1015 && currentState != State.WAIT_FOR_START_CALL && !finishedSending) {
+        if (read < 1015 && currentState != State.WAIT_FOR_START_CALL && !finishedSending   && packetIsNew) {
             finishedSending = true;
             lastTransmittedBit = alternatingBit;
         }
@@ -146,6 +148,8 @@ public class FileSender {
 
 
     public void waitForAck(int alternatingBit) throws IOException {
+        boolean correctState = currentState.name().contains(String.valueOf(alternatingBit));
+
         try (DatagramSocket receiveSocket = new DatagramSocket(100)) {
             byte[] ackData = new byte[BUFFER_LENGTH];
             boolean outOfTime = false;
@@ -157,7 +161,7 @@ public class FileSender {
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
                     int receivedBit = (int) ackData[1015];
-                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
+                    if (! correctState && alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
                         received = true;
                         if (currentState != State.WAIT_FOR_ACK_FIN) {
                             currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;

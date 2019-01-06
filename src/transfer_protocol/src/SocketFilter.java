@@ -6,9 +6,8 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class SocketFilter extends DatagramSocket {
-
     private static final double PROBABILITY_PACKET_FAILURE = 0.05;
-    private static final double PROBABILITY_PACKET_REJECT = 0.1;
+    private static final double PROBABILITY_PACKET_REJECT = 0.005;
     private static final double PROBABILITY_PACKET_DUPLICATE = 0.05;
     private boolean packetFailure;
     private boolean refusePacket;
@@ -56,7 +55,9 @@ public class SocketFilter extends DatagramSocket {
      * decides if a bit failure should be generated using a given probability
      **/
     public boolean decideToSendPacketFailure(double probability) {
-        return Math.random() > probability;
+        double random = Math.random();
+        System.out.println("random: " + random);
+        return  random < probability;
     }
 
     /**
