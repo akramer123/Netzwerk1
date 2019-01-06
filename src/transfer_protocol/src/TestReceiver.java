@@ -152,7 +152,7 @@ public class TestReceiver {
 
             DatagramPacket datagramPacket = new DatagramPacket(fileData, fileData.length, IPAddress, 100);
             sendSocket.send(datagramPacket);
-            //System.out.println("send");
+            System.out.println("send Ack" + alternatingBit);
         }
     }
 

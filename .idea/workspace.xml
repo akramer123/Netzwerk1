@@ -6,6 +6,22 @@
       <change beforePath="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" afterPath="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" />
       <change beforePath="$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java" afterPath="$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java" />
       <change beforePath="$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java" afterPath="$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Message.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Message.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck0.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck0.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck1.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ReceiveAck1.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ResendPackage.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$ResendPackage.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$SendNewPackage.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$SendNewPackage.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$State.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$State.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Transition.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender$Transition.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/FileSender.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$Message.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$Message.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ReceivePacket0.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ReceivePacket0.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ReceivePacket1.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ReceivePacket1.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ResendAck.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$ResendAck.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$SendAck.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$SendAck.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$State.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$State.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$Transition.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver$Transition.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver.class" afterPath="$PROJECT_DIR$/target/classes/transfer_protocol/src/TestReceiver.class" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,18 +43,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FileSender.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FileSender.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1932">
-              <caret line="96" column="53" lean-forward="false" selection-start-line="96" selection-start-column="53" selection-end-line="96" selection-end-column="53" />
+            <state relative-caret-position="3087">
+              <caret line="202" column="36" lean-forward="false" selection-start-line="202" selection-start-column="28" selection-end-line="202" selection-end-column="36" />
               <folding>
-                <element signature="e#12195#12196#0" expanded="true" />
-                <element signature="e#12230#12231#0" expanded="true" />
-                <element signature="e#12258#12259#0" expanded="true" />
-                <element signature="e#12285#12286#0" expanded="true" />
-                <element signature="e#12314#12315#0" expanded="true" />
-                <element signature="e#12340#12341#0" expanded="true" />
+                <element signature="e#12247#12248#0" expanded="true" />
+                <element signature="e#12282#12283#0" expanded="true" />
+                <element signature="e#12310#12311#0" expanded="true" />
+                <element signature="e#12337#12338#0" expanded="true" />
+                <element signature="e#12366#12367#0" expanded="true" />
+                <element signature="e#12392#12393#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketFilter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SocketFilter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1071">
-              <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+            <state relative-caret-position="105">
+              <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -81,7 +97,7 @@
       <file leaf-file-name="FileSenderTest.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
+            <state relative-caret-position="42">
               <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
               <folding />
             </state>
@@ -91,8 +107,8 @@
       <file leaf-file-name="TestReceiver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1260">
-              <caret line="66" column="32" lean-forward="false" selection-start-line="66" selection-start-column="32" selection-end-line="66" selection-end-column="32" />
+            <state relative-caret-position="3045">
+              <caret line="154" column="32" lean-forward="false" selection-start-line="154" selection-start-column="32" selection-end-line="154" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -112,10 +128,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
-        <option value="$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java" />
         <option value="$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt" />
-        <option value="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" />
+        <option value="$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java" />
         <option value="$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java" />
+        <option value="$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java" />
       </list>
     </option>
   </component>
@@ -374,16 +390,15 @@
       <workItem from="1544949488369" duration="12842000" />
       <workItem from="1545049386144" duration="5739000" />
       <workItem from="1545383680756" duration="32000" />
-      <workItem from="1546792965548" duration="245000" />
+      <workItem from="1546792965548" duration="4628000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32526000" />
+    <option name="totallyTimeSpent" value="36909000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -397,12 +412,13 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39915374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23867403" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32707182" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31712708" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.60994476" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32863188" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -420,7 +436,6 @@
       <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32707182" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3281768" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -486,19 +501,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java</url>
-          <line>100</line>
+          <line>104</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java</url>
-          <line>204</line>
+          <line>210</line>
           <properties />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java</url>
-          <line>190</line>
+          <line>196</line>
           <properties />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
@@ -697,9 +712,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/bild.PNG">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/transfer_protocol/bild2.png">
       <provider selected="true" editor-type-id="images">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3045">
+          <caret line="154" column="32" lean-forward="false" selection-start-line="154" selection-start-column="32" selection-end-line="154" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest2.txt">
@@ -710,47 +754,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/FileSenderTest.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/bild.PNG">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/TestReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
-          <caret line="66" column="32" lean-forward="false" selection-start-line="66" selection-start-column="32" selection-end-line="66" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/FileSender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1932">
-          <caret line="96" column="53" lean-forward="false" selection-start-line="96" selection-start-column="53" selection-end-line="96" selection-end-column="53" />
+        <state relative-caret-position="3087">
+          <caret line="202" column="36" lean-forward="false" selection-start-line="202" selection-start-column="28" selection-end-line="202" selection-end-column="36" />
           <folding>
-            <element signature="e#12195#12196#0" expanded="true" />
-            <element signature="e#12230#12231#0" expanded="true" />
-            <element signature="e#12258#12259#0" expanded="true" />
-            <element signature="e#12285#12286#0" expanded="true" />
-            <element signature="e#12314#12315#0" expanded="true" />
-            <element signature="e#12340#12341#0" expanded="true" />
+            <element signature="e#12247#12248#0" expanded="true" />
+            <element signature="e#12282#12283#0" expanded="true" />
+            <element signature="e#12310#12311#0" expanded="true" />
+            <element signature="e#12337#12338#0" expanded="true" />
+            <element signature="e#12366#12367#0" expanded="true" />
+            <element signature="e#12392#12393#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/transfer_protocol/src/SocketFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
