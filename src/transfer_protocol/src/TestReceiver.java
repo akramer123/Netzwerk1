@@ -13,15 +13,31 @@ import java.util.zip.CRC32;
 
 public class TestReceiver {
     private final CRC32 crc = new CRC32();
-    private DatagramSocket serverSocket = new DatagramSocket(90);
+  //  private DatagramSocket serverSocket = new DatagramSocket(90);
+    private SocketFilter serverSocket = new SocketFilter(90);
     private static final int BUFFER_LENGTH = 1024;
     private int read;
     private State currentState;
     private final Transition[][] transition;
     private String fileName;
+    private String receiveFileName;
     private static FileOutputStream fileDataWriter;
+    private String path;
+    private static long start;
+    private static long end;
+    private static long dataLength;
+
+
 
     public TestReceiver() throws SocketException {
+        path =  System.getProperty("user.dir");
+        String[] pathElements = path.split("\\\\");
+        path = "";
+        for (int i = 0; i < pathElements.length; i++) {
+            System.out.println(pathElements[i]);
+            path = path +pathElements[i] +  "\\\\";
+        }
+        System.out.println(path);
 
         currentState = State.WAIT_FOR_NEW_PACKET_0;
 
@@ -37,6 +53,9 @@ public class TestReceiver {
     }
 
     public static void main(String[] args) throws IOException {
+
+        start = System.currentTimeMillis();
+
         TestReceiver testReceiver = new TestReceiver();
         testReceiver.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
 
@@ -52,6 +71,8 @@ public class TestReceiver {
             }
         }
         fileDataWriter.close();
+        end = System.currentTimeMillis();
+        testReceiver.calculateGoodput();
         System.out.println("END!!");
     }
 
@@ -72,10 +93,21 @@ public class TestReceiver {
                 int count = (int) Stream.iterate(0, i -> i + 1).limit(1014).filter(i -> data[i] != 0).count();
                 //System.out.println("count: " + count + "    correctState: " + correctState);
                 if (count == 0) {
-                    read = -1;
-                    System.out.println("Send fin ack");
+                   read = -1;
+                  //  if (correctChecksum) {
+                        System.out.println("Send fin ack");
+                  //  }
+            /*        else {
+                        System.out.println("fin ack packet failure");
+                    }*/
                     sendAck(alternatingBit);
                 }
+
+
+/*                if (new String(data).contains("closeConnection")){
+                    System.out.println("closeConnection");
+                    read = -1;
+                }*/
 
                 if (correctState & correctChecksum) {
                     currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
@@ -92,9 +124,17 @@ public class TestReceiver {
                     if (StringUtils.isEmpty(fileName)) {
                         fileName = new String(fileData);
                         String[] splitFileName = fileName.split("\\.");
-                        fileDataWriter = new FileOutputStream(splitFileName[0] + "2." + splitFileName[1]);
+                         receiveFileName = splitFileName[0] + "2." + splitFileName[1];
+                        System.out.println(receiveFileName);
+                        fileDataWriter = new FileOutputStream(path + receiveFileName);
                     } else {
                         fileDataWriter.write(fileData);
+/*                        for (byte b : fileData) {
+                            System.out.print(b);
+
+                        }*/
+                        System.out.println(new String(fileData));
+                        System.out.println("-------------------------------------------------------------------------");
                     }
                     //System.out.println("received packet " + new String(fileData));
 
@@ -225,8 +265,22 @@ public class TestReceiver {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return alternatingBit == 0 ? State.WAIT_FOR_NEW_PACKET_1 : State.WAIT_FOR_NEW_PACKET_0;
+            return alternatingBit == 0 ? State.WAIT_FOR_NEW_PACKET_0 : State.WAIT_FOR_NEW_PACKET_1;
         }
+    }
+
+
+
+    private double calculateGoodput() {
+        long timeInMilliseconds = end - start;
+
+        long dataLengthInBytes = new File(path + receiveFileName).length();
+        System.out.println(path + receiveFileName);
+        System.out.println("file size" + dataLengthInBytes);
+        double goodPut = ((double )dataLengthInBytes) / (timeInMilliseconds);
+        System.out.println("goodPut" + goodPut);
+
+        return goodPut;
     }
 
 }
