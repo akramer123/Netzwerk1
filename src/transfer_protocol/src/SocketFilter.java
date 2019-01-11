@@ -16,6 +16,7 @@ public class SocketFilter extends DatagramSocket {
 
     public SocketFilter() throws SocketException {
         super();
+
         this.packetFailure = true;
         this.refusePacket = true;
         this.duplicatePacket = true;

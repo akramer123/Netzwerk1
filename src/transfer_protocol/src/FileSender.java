@@ -12,7 +12,7 @@ import java.util.zip.CRC32;
 public class FileSender {
     private static final int PORT = 90;
     private static final int BUFFER_LENGTH = 1024;
-    private static final int TIMEOUT = 20000;
+    private static final int TIMEOUT = 10000;
     private final String filename;
     private final String address;
     private final CRC32 crc = new CRC32();
@@ -103,7 +103,7 @@ public class FileSender {
         }
 
 
-        if (read < 1015 && currentState != State.WAIT_FOR_START_CALL && !finishedSending   && packetIsNew) {
+        if (read < 1015 && currentState != State.WAIT_FOR_START_CALL && !finishedSending && packetIsNew) {
             finishedSending = true;
             lastTransmittedBit = alternatingBit;
         }
@@ -132,7 +132,8 @@ public class FileSender {
         Stream.iterate(0, i -> i + 1).limit(8).forEach(i -> fileData[1016 + i] = crcBytes[i]);
         for (int i = 1016; i < 1024; i++) {
             System.out.print(fileData[i]);
-        };
+        }
+        ;
     }
 
     private void generateNewDataPacket() {
@@ -148,8 +149,14 @@ public class FileSender {
 
     private void generateStartPacket() {
         fileData = new byte[BUFFER_LENGTH];
-        String[] path = filename.split("\\\\");
-        byte[] startMessage = path[path.length-1].getBytes();
+
+        String[] path;
+        if (filename.contains("/")) {
+            path = filename.split("/");
+        } else {
+            path = filename.split("\\\\");
+        }
+        byte[] startMessage = path[path.length - 1].getBytes();
         Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
         crc.update(fileData, 0, 1015);
     }
@@ -169,7 +176,7 @@ public class FileSender {
                     receiveSocket.receive(datagramPacket);
                     String answer = new String(ackData);
                     int receivedBit = (int) ackData[1015];
-             if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
+                    if (alternatingBit == 1 && answer.contains("ACK") && receivedBit == 1 || alternatingBit == 0 && answer.contains("ACK") && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN && lastTransmittedBit == 0 && receivedBit == 0 || currentState == State.WAIT_FOR_ACK_FIN || lastTransmittedBit == 1 && receivedBit == 1) {
                         received = true;
                         if (currentState != State.WAIT_FOR_ACK_FIN) {
                             currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
@@ -258,7 +265,7 @@ public class FileSender {
     class ResendPackage extends Transition {
         @Override
         public State execute(Message input) throws IOException {
-            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 || (input == Message.TIMEOUT  && currentState == State.WAIT_FOR_ACK_0)? 0 : 1;
+            int alternatingBit = input == Message.GOT_CALL_FROM_ABOVE_0 || (input == Message.TIMEOUT && currentState == State.WAIT_FOR_ACK_0) ? 0 : 1;
             System.out.println("execute resend package " + alternatingBit);
             sendPacket(false, alternatingBit);
             final State returnState = alternatingBit == 0 ? State.WAIT_FOR_ACK_0 : State.WAIT_FOR_ACK_1;
