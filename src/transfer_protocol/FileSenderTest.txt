@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
-public class FileSender {
+public class FileSenderxy {
     private static final int PORT = 90;
     private static final int BUFFER_LENGTH = 1024;
     private static final int TIMEOUT = 15000;

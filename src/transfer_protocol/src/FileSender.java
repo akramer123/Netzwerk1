@@ -30,6 +30,7 @@ public class FileSender {
     static boolean processFinished = false;
 
 
+
     //  C:\\Users\\Kristina\\Desktop\\Studium\\Netzwerke\\Netzwerk1\\src\\transfer_protocol\\bild.png localhost
     public FileSender(String filename, String address) throws FileNotFoundException, SocketException {
         this.filename = filename;
@@ -147,7 +148,8 @@ public class FileSender {
 
     private void generateStartPacket() {
         fileData = new byte[BUFFER_LENGTH];
-        byte[] startMessage = filename.getBytes();
+        String[] path = filename.split("\\\\");
+        byte[] startMessage = path[path.length-1].getBytes();
         Stream.iterate(0, i -> i + 1).limit(startMessage.length).forEach(i -> fileData[i] = startMessage[i]);
         crc.update(fileData, 0, 1015);
     }
