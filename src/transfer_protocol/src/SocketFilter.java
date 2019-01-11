@@ -6,9 +6,9 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class SocketFilter extends DatagramSocket {
-    private static final double PROBABILITY_PACKET_FAILURE = 0.05;
-    private static final double PROBABILITY_PACKET_REJECT = 0.005;
-    private static final double PROBABILITY_PACKET_DUPLICATE = 0.05;
+    private static final double PROBABILITY_PACKET_FAILURE = 0.1;
+    private static final double PROBABILITY_PACKET_REJECT = 0.1;
+    private static final double PROBABILITY_PACKET_DUPLICATE = 0.1;
     private boolean packetFailure;
     private boolean refusePacket;
     private boolean duplicatePacket;
@@ -17,8 +17,8 @@ public class SocketFilter extends DatagramSocket {
     public SocketFilter() throws SocketException {
         super();
         this.packetFailure = false;
-        this.refusePacket = false;
-        this.duplicatePacket = false;
+        this.refusePacket = true;
+        this.duplicatePacket = true;
     }
 
     public SocketFilter(int port) throws SocketException {
