@@ -2,8 +2,7 @@ package transfer_protocol.src;
 
 import org.thymeleaf.util.StringUtils;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -15,17 +14,25 @@ import java.util.zip.CRC32;
 
 public class FileReceiver {
     private final CRC32 crc = new CRC32();
-    private DatagramSocket serverSocket = new DatagramSocket(90);
+    private DatagramSocket serverSocket = new SocketFilter(90);
     private static final int BUFFER_LENGTH = 1024;
     private int read;
     private State currentState;
     private final Transition[][] transition;
     private String fileName;
     private static FileOutputStream fileDataWriter;
-    private static String senderIP;
+    private String path;
+    private static long start;
+    private static long end;
+    private static int finCounter;
+    private static boolean waitForFinPacket = false;
+    private static boolean close = false;
+    private String pathWithFilename;
+
+
 
     public FileReceiver() throws SocketException {
-
+        serverSocket.setSoTimeout(10000);
         currentState = State.WAIT_FOR_NEW_PACKET_0;
 
         transition = new Transition[State.values().length][Message.values().length];
@@ -36,20 +43,16 @@ public class FileReceiver {
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_DUPLICATE.ordinal()] = new ResendAck();
         transition[State.WAIT_FOR_NEW_PACKET_1.ordinal()][Message.RECEIVED_PACKET_1.ordinal()] = new ReceivePacket1();
         transition[State.WAIT_FOR_START_CALL.ordinal()][Message.GOT_START_CALL_FROM_ABOVE.ordinal()] = new ReceivePacket1();
-        System.out.println("INFO Receiver constructed, current state: " + currentState);
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            senderIP = "localhost";
-        } else {
-            senderIP = args[0];
-        }
+
+        start = System.currentTimeMillis();
+
         FileReceiver testReceiver = new FileReceiver();
         testReceiver.processMessage(Message.GOT_START_CALL_FROM_ABOVE);
 
-
-        while (testReceiver.getRead() != -1) {
+        while (testReceiver.getRead() != -1  || (waitForFinPacket  && !close)) {
             if (testReceiver.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_0) {
                 testReceiver.processMessage(Message.GOT_CALL_FROM_ABOVE_0);
             } else if (testReceiver.getCurrentState() == State.WAIT_FOR_CALL_FROM_ABOVE_1) {
@@ -60,18 +63,20 @@ public class FileReceiver {
                 testReceiver.waitForNewPacket();
             }
         }
-
         fileDataWriter.close();
+        end = System.currentTimeMillis();
+        testReceiver.calculateGoodput();
         System.out.println("END!!");
-
     }
 
     private void waitForNewPacket() throws IOException {
-        //System.out.println("Waiting for new packet");
+        if (waitForFinPacket) {
+            read = 1;
+        }
         byte[] data = new byte[BUFFER_LENGTH];
         boolean outOfTime = false;
         boolean received = false;
-        while (!outOfTime && !received && read != -1) {
+        while (!outOfTime && !received && read != -1){
             try {
                 DatagramPacket receivePacket = new DatagramPacket(data, data.length);
                 serverSocket.receive(receivePacket);
@@ -82,10 +87,18 @@ public class FileReceiver {
 
                 int count = (int) Stream.iterate(0, i -> i + 1).limit(1014).filter(i -> data[i] != 0).count();
                 if (count == 0) {
-                    read = -1;
-                    System.out.println("Send fin ack");
-                    sendAck(alternatingBit);
-                } else if (correctState & correctChecksum) {
+                    if (finCounter == 1) {
+                        waitForFinPacket = false;
+                    }
+                    else {
+                        sendAck(alternatingBit);
+                        waitForFinPacket = true;
+                    }
+                    finCounter++;
+                }
+
+
+                if (correctState & correctChecksum) {
                     currentState = alternatingBit == 1 ? State.WAIT_FOR_CALL_FROM_ABOVE_0 : State.WAIT_FOR_CALL_FROM_ABOVE_1;
                     int endIndex = 1015;
                     if (StringUtils.isEmpty(fileName)) {
@@ -100,19 +113,30 @@ public class FileReceiver {
                     if (StringUtils.isEmpty(fileName)) {
                         fileName = new String(fileData);
                         String[] path;
+                        String splitChar;
+                        String dividePath;
                         if (fileName.contains("/")) {
-                            path = fileName.split("/");
+                            splitChar = "/";
+                            dividePath = "/";
                         } else {
-                            path = fileName.split("\\\\");
+                            // Hier musste ich zwei verschiedene Variablen nehmen, weil ich bei Windows  ueber Java doppelte Backslashes
+                            // reinbekomme, aber wenn ich auf das File zugreifen will (brauche ich fuer den Goodput)
+                            //muss ich den Pfad mit einzelnen Backslashes zusammen bauen.
+                            //splitChar ist zum Trennen dividePath zum zusammen bauen
+                            splitChar = "\\\\";
+                            dividePath = "\\";
                         }
+                        path = fileName.split(splitChar);
                         String[] fileType = path[0].split("\\.");
                         fileName = fileType[0] + "2." + fileType[1];
-                        fileDataWriter = new FileOutputStream(System.getProperty("user.dir") + "/" + fileName);
-                        System.out.println(System.getProperty("user.dir") + "/" + fileName);
+                        pathWithFilename = System.getProperty("user.dir") + dividePath + fileName;
+                        fileDataWriter = new FileOutputStream(pathWithFilename);
+                        System.out.println("pathWithFilename" + pathWithFilename);
+
+
                     } else {
                         if (fileName.split("\\.")[1].contains("txt")) {
                             final String converted = new String(fileData, StandardCharsets.ISO_8859_1);
-                            //System.out.println(converted);
                             final byte[] outputBytes = converted.trim().getBytes(StandardCharsets.ISO_8859_1);
                             fileDataWriter.write(outputBytes);
                         } else {
@@ -120,17 +144,28 @@ public class FileReceiver {
                         }
                     }
 
+
                     received = true;
-                } else {
+                } else if (count != 0) {
                     processMessage(Message.RECEIVED_DUPLICATE);
                 }
 
             } catch (SocketTimeoutException exception) {
-                outOfTime = true;
+                if (waitForFinPacket) {
+
+
+                    close = true;
+                    finCounter = 0;
+                    read = -1;
+                }
                 System.out.println("timeout");
                 processMessage(Message.TIMEOUT);
-                read = -1;
+                outOfTime = true;
             }
+            System.out.println("end of wait for new packet currentState" + currentState);
+            System.out.println("outOfTime" + outOfTime);
+            System.out.println("received" + received);
+            System.out.println("read" + read);
         }
     }
 
@@ -154,7 +189,6 @@ public class FileReceiver {
 
         System.out.println("alternating bit" + alternatingBit);
         boolean correctState = !currentState.name().contains(String.valueOf(alternatingBit));
-        System.out.println("Correct state: " + correctState);
         header.put("correctState", correctState);
         header.put("crc", isRightChecksum);
 
@@ -164,8 +198,8 @@ public class FileReceiver {
 
 
     public void sendAck(final int alternatingBit) throws IOException {
-        try (DatagramSocket sendSocket = new DatagramSocket()) {
-            InetAddress IPAddress = InetAddress.getByName(senderIP);
+        try (SocketFilter sendSocket = new SocketFilter()) {
+            InetAddress IPAddress = InetAddress.getByName("localhost");
             String ack = "ACK";
 
             byte[] fileData = new byte[BUFFER_LENGTH];
@@ -181,12 +215,11 @@ public class FileReceiver {
 
 
     public void processMessage(Message input) {
-        //System.out.println("INFO Received " + input + " in state " + currentState);
+        System.out.println("INFO Received " + input + " in state " + currentState);
         Transition trans = transition[currentState.ordinal()][input.ordinal()];
         if (trans != null) {
             currentState = trans.execute(input);
         }
-        //System.out.println("INFO State: " + currentState);
     }
 
     public State getCurrentState() {
@@ -250,6 +283,17 @@ public class FileReceiver {
             }
             return alternatingBit == 0 ? State.WAIT_FOR_NEW_PACKET_0 : State.WAIT_FOR_NEW_PACKET_1;
         }
+    }
+
+
+
+    private double calculateGoodput() {
+        long timeInMilliseconds = end - start;
+        long dataLengthInBytes = new File(pathWithFilename).length();
+        double goodPut = ((double )dataLengthInBytes) / (timeInMilliseconds);
+        System.out.println("goodPut" + goodPut);
+
+        return goodPut;
     }
 
 }

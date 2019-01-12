@@ -17,15 +17,15 @@ public class SocketFilter extends DatagramSocket {
     public SocketFilter() throws SocketException {
         super();
 
-        this.packetFailure = false;
-        this.refusePacket = false;
+        this.packetFailure = true;
+        this.refusePacket = true;
         this.duplicatePacket = true;
     }
 
     public SocketFilter(int port) throws SocketException {
         super(port);
-        this.packetFailure = false;
-        this.refusePacket = false;
+        this.packetFailure = true;
+        this.refusePacket = true;
         this.duplicatePacket = true;
     }
 
