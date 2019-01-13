@@ -28,6 +28,8 @@ public class TaxiApiController {
     public String getStatus(@RequestParam(value = "id") String id, HttpServletResponse response) {
         TaxiModel taxi = getTaxi(id);
         if (taxi != null) {
+
+
             return taxi.getStatus().name();
         }
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
